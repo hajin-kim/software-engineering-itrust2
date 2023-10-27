@@ -13,14 +13,14 @@
 Contact information 기재는 10월 말까지 하기로 했습니다.
 
 | 성함   | 학번       | GitLab username | Contact #1                       | Contact #2                                                                      |
-| ------ | ---------- | --------------- | -------------------------------- | ------------------------------------------------------------------------------- |
+| ------ | ---------- | --------------- |----------------------------------|---------------------------------------------------------------------------------|
 | 김지안 | 2021147532 | 2021147532      |                                  |                                                                                 |
 | 김하진 | 2019147580 | 2019147580      | [Email](kimhajin@yonsei.ac.kr)   | [LinkedIn](https://www.linkedin.com/in/kim-hajin)                               |
 | 박민지 | 2019147538 | 2019147538      | [Email](0225minji@yonsei.ac.kr)  | [LinkedIn](https://www.linkedin.com/in/minji-park-187696291/)                   |
 | 박정양 | 2020147580 | JungyangPark    |                                  |                                                                                 |
 | 성현준 | 2019147593 | sunghj1118      | [Email](sunghj1118@yonsei.ac.kr) | [LinkedIn](https://www.linkedin.com/in/hyunjoon-sung/)                          |
 | 윤장한 | 2019147574 | 2019147574      |                                  |                                                                                 |
-| 윤정현 | 2019147516 | 2019147516      |                                  |                                                                                 |
+| 윤정현 | 2019147516 | 2019147516      | [Email](grant9390@naver.com)     | [LinkedIn](https://www.linkedin.com/in/dev-qb)                                  |
 | 이상헌 | 2019147549 | SangHeonLee     |                                  |                                                                                 |
 | 전희재 | 2020147512 | 2020147512      | [Email](0914eagle@yonsei.ac.kr)  | [LinkedIn](https://www.linkedin.com/in/%ED%9D%AC%EC%9E%AC-%EC%A0%84-3391b7273/) |
 | 홍세아 | 2020147020 | 2020147020      |                                  |                                                                                 |

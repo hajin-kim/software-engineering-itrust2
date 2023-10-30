@@ -7,6 +7,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,7 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class ApiPatientSearchController {
     private final PatientSearchService patientService;
 
-    @GetMapping("/")
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_ER')")
     public List<Patient> listPatientsByName(String patientName){
         if(patientName == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "patientName is required");

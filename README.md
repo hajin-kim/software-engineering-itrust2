@@ -17,7 +17,7 @@ Contact information 기재는 10월 말까지 하기로 했습니다.
 | 김지안 | 2021147532 | 2021147532      | [Email](kimhajin@yonsei.ac.kr)   | [LinkedIn](https://www.linkedin.com/in/kim-hajin)                               |
 | 김하진 | 2019147580 | 2019147580      |                                  |                                                                                 |
 | 박민지 | 2019147538 | 2019147538      | [Email](0225minji@yonsei.ac.kr)  | [LinkedIn](https://www.linkedin.com/in/minji-park-187696291/)                   |
-| 박정양 | 2020147580 | JungyangPark    |                                  |                                                                                 |
+| 박정양 | 2020147580 | JungyangPark    | [Email](wjddid000624@gmail.com)  | [LinkedIn](www.linkedin.com/in/jungyang-park-661109290)                         |
 | 성현준 | 2019147593 | sunghj1118      | [Email](sunghj1118@yonsei.ac.kr) | [LinkedIn](https://www.linkedin.com/in/hyunjoon-sung/)                          |
 | 윤장한 | 2019147574 | 2019147574      |                                  |                                                                                 |
 | 윤정현 | 2019147516 | 2019147516      |                                  |                                                                                 |
@@ -47,6 +47,8 @@ Contact information 기재는 10월 말까지 하기로 했습니다.
 프론트엔드 팀에서 활동하고 있습니다. Angular는 처음이라 열심히 공부할 예정입니다.
 
 #### 박정양
+
+백엔드 팀에서 활동하고 있습니다. 백엔드 개발 경험이 거의 없습니다. 다만 스프링부트를 현재 공부 중에 있어 응용 해보고 싶어 지원했습니다.
 
 #### 성현준
 
@@ -105,7 +107,7 @@ Contact information 기재는 10월 말까지 하기로 했습니다.
 
 **_박민지_**, 박정양, 윤장한
 
-- 화면 및 UI를 그리고 백엔드와 연결합니다.
+- 화면 및 UI를 그리고 백엔드와 연결[README.md](README.md)합니다.
 - 제시된 AngularJS를 메인으로 사용하며, 필요에 따라 리팩토링합니다.
 - 소수 정예이며, 파트장을 돌아가며 맡습니다.
 - 워낙 귀한 분들이고 고생하시는 만큼 별도의 파트 미팅은 없습니다.

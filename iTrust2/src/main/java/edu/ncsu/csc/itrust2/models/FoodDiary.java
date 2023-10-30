@@ -2,6 +2,7 @@ package edu.ncsu.csc.itrust2.models;
 
 import javax.persistence.*;
 
+import edu.ncsu.csc.itrust2.forms.FoodDiaryForm;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,4 +39,25 @@ public class FoodDiary {
     String sugarsGramsTotal;
     String fiberGramsTotal;
     String proteinGramsTotal;
+
+    public FoodDiary(final FoodDiaryForm form) {
+        id = form.getId();
+        setDate(form.getDate());
+        setMealType(form.getMealType());
+        setFoodName(form.getFoodName());
+        setServingsNum(form.getServingsNum());
+        setCaloriesPerServing(form.getCaloriesPerServing());
+        setFatGramsPerServing(form.getFatGramsPerServing());
+        setSodiumMilligramsPerServing(form.getSodiumMilligramsPerServing());
+        setCarbsGramsPerServing(form.getCarbsGramsPerServing());
+        setSugarsGramsPerServing(form.getSugarsGramsPerServing());
+        setFiberGramsPerServing(form.getFiberGramsPerServing());
+        setProteinGramsPerServing(form.getProteinGramsPerServing());
+        setFatGramsTotal(form.getFatGramsTotal());
+        setSodiumMilligramsTotal(form.getSodiumMilligramsTotal());
+        setCarbsGramsTotal(form.getCarbsGramsTotal());
+        setSugarsGramsTotal(form.getSugarsGramsTotal());
+        setFiberGramsTotal(form.getFiberGramsTotal());
+        setProteinGramsTotal(form.getProteinGramsTotal());
+    }
 }

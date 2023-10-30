@@ -15,14 +15,14 @@ Contact information 기재는 10월 말까지 하기로 했습니다.
 | 성함   | 학번       | GitLab username | Contact #1                       | Contact #2                                                                      |
 | ------ | ---------- | --------------- |----------------------------------|---------------------------------------------------------------------------------|
 | 김지안 | 2021147532 | 2021147532      |                                  |                                                                                 |
-| 김하진 | 2019147580 | 2019147580      | [Email](mailto:kimhajin@yonsei.ac.kr)   | LinkedIn [kim-hajin](https://www.linkedin.com/in/kim-hajin)                               |
-| 박민지 | 2019147538 | 2019147538      | [Email](mailto:0225minji@yonsei.ac.kr)  | LinkedIn [minji-park-187696291](https://www.linkedin.com/in/minji-park-187696291/)                   |
-| 박정양 | 2020147580 | JungyangPark    | [Email](wjddid000624@gmail.com)  | LinkedIn [jungyang-park-661109290](www.linkedin.com/in/jungyang-park-661109290)                         |
-| 성현준 | 2019147593 | sunghj1118      | [Email](mailto:sunghj1118@yonsei.ac.kr) | LinkedIn [hyunjoon-sung](https://www.linkedin.com/in/hyunjoon-sung/)                          |
-| 윤장한 | 2019147574 | 2019147574      |                                  |                                                                                 |
-| 윤정현 | 2019147516 | 2019147516      | [Email](mailto:grant9390@naver.com)     | LinkedIn [dev-qb](https://www.linkedin.com/in/dev-qb)                                  |
-| 이상헌 | 2019147549 | SangHeonLee     | [Email](hunny7434@naver.com)     | LinkedIn [sangheon-lee-a997b2298](https://www.linkedin.com/in/sangheon-lee-a997b2298/)                 |
-| 전희재 | 2020147512 | 2020147512      | [Email](mailto:0914eagle@yonsei.ac.kr)  | LinkedIn [희재-전-3391b7273](https://www.linkedin.com/in/%ED%9D%AC%EC%9E%AC-%EC%A0%84-3391b7273/) |
+| 김하진 | 2019147580 | 2019147580      | [Email](mailto:kimhajin@yonsei.ac.kr)   | LinkedIn [kim-hajin](<https://www.linkedin.com/in/kim-hajin>)                               |
+| 박민지 | 2019147538 | 2019147538      | [Email](mailto:0225minji@yonsei.ac.kr)  | LinkedIn [minji-park-187696291](<https://www.linkedin.com/in/minji-park-187696291/>)                   |
+| 박정양 | 2020147580 | JungyangPark    | [Email](mailto:wjddid000624@gmail.com)  | LinkedIn [jungyang-park-661109290](<https://www.linkedin.com/in/jungyang-park-661109290>)                         |
+| 성현준 | 2019147593 | sunghj1118      | [Email](mailto:sunghj1118@yonsei.ac.kr) | LinkedIn [hyunjoon-sung](<https://www.linkedin.com/in/hyunjoon-sung/>)                          |
+| 윤장한 | 2019147574 | 2019147574      |  [Email](mailto:jeffrobot99@gmail.com)  | LinkedIn [janghan-yoon-336199198](<https://www.linkedin.com/in/janghan-yoon-336199198/>)                |
+| 윤정현 | 2019147516 | 2019147516      | [Email](mailto:grant9390@naver.com)     | LinkedIn [dev-qb](<https://www.linkedin.com/in/dev-qb>)                                  |
+| 이상헌 | 2019147549 | SangHeonLee     | [Email](mailto:hunny7434@naver.com)     | LinkedIn [sangheon-lee-a997b2298](<https://www.linkedin.com/in/sangheon-lee-a997b2298/>)                 |
+| 전희재 | 2020147512 | 2020147512      | [Email](mailto:0914eagle@yonsei.ac.kr)  | LinkedIn [%ED%9D%AC%EC%9E%AC-%EC%A0%84-3391b7273](<https://www.linkedin.com/in/%ED%9D%AC%EC%9E%AC-%EC%A0%84-3391b7273/>) |
 | 홍세아 | 2020147020 | 2020147020      | [Email](mailto:hongkayla@yonsei.ac.kr)  |                                                                                 |
 
 ### 팀원 소개
@@ -57,6 +57,9 @@ Contact information 기재는 10월 말까지 하기로 했습니다.
 최근에는 쿠버네티스에 관심이 생겨서 개별적으로 공부하고 있습니다.
 
 #### 윤장한
+
+안녕하세요,
+해당 팀에서 프론트엔드를 맡은 윤장한 입니다. 스타트업에서 Flutter를 활용한 앱 개발 및 depth map estimation에 대한 research 및 apply를 한 경력이 있으며 AI-powered App을 만드는 것에 관심이 있습니다. 다양한 프로젝트를 해보는 것을 즐기며 최근엔 인공지능에 관심이 있어 개인공부와 동아리 활동을 병행하며 다양하게 공부중입니다.
 
 #### 윤정현
 

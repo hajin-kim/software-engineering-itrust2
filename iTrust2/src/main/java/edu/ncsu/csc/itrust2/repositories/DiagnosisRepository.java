@@ -3,6 +3,7 @@ package edu.ncsu.csc.itrust2.repositories;
 import edu.ncsu.csc.itrust2.models.Diagnosis;
 import edu.ncsu.csc.itrust2.models.OfficeVisit;
 
+import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 

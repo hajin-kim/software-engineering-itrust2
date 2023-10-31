@@ -23,6 +23,7 @@ public class ApiFoodDiaryController {
         final String patient_name = LoggerUtil.currentUser();
         return foodDiaryService.listByPatient(patient_name);
     }
+
     @PostMapping
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public FoodDiary addFoodDiary(@RequestBody final FoodDiaryForm foodDiary) {

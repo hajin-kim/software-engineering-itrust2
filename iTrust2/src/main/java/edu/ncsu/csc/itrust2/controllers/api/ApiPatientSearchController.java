@@ -13,17 +13,17 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/patientSearch")
+@RequestMapping("/api/v1/patientSearch")
 public class ApiPatientSearchController {
     private final PatientSearchService patientService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_ER')")
-    public List<Patient> listPatientsByName(String patientName){
-        if(patientName == null){
+    public List<Patient> listPatientsByName(@RequestParam String nameQuery) {
+        if (nameQuery == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "patientName is required");
         }
 
-        return patientService.listByPatientName(patientName);
+        return patientService.listByPatientName(nameQuery);
     }
 }

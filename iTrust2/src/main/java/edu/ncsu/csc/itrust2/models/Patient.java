@@ -29,17 +29,14 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDa
 public class Patient extends User {
 
     /** The first name of this patient */
-    @Getter
     @Setter
     @Length(min = 1) private String firstName;
 
     /** The preferred name of this patient */
-    @Getter
     @Setter
     @Length(max = 20) private String preferredName;
 
     /** The last name of this patient */
-    @Getter
     @Setter
     @Length(min = 1) private String lastName;
 
@@ -73,7 +70,6 @@ public class Patient extends User {
     @Length(min = 12, max = 12) private String phone;
 
     /** The birthday of this patient */
-    @Getter
     @Setter
     @Basic
     // Allows the field to show up nicely in the database
@@ -93,7 +89,6 @@ public class Patient extends User {
     @Setter private String causeOfDeath;
 
     /** The blood type of this patient */
-    @Getter
     @Setter
     @Enumerated(EnumType.STRING)
     private BloodType bloodType;

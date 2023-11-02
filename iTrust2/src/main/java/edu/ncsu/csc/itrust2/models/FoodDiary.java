@@ -1,5 +1,8 @@
 package edu.ncsu.csc.itrust2.models;
 
+import com.google.gson.annotations.JsonAdapter;
+import edu.ncsu.csc.itrust2.adapters.ZonedDateTimeAdapter;
+import edu.ncsu.csc.itrust2.adapters.ZonedDateTimeAttributeConverter;
 import edu.ncsu.csc.itrust2.forms.FoodDiaryForm;
 
 import javax.persistence.*;
@@ -9,9 +12,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.ZonedDateTime;
+
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
 public class FoodDiary {
     @Id
@@ -23,26 +27,45 @@ public class FoodDiary {
     @JoinColumn(name = "username", columnDefinition = "varchar(20)")
     private Patient patient;
 
-    String date;
+    @Setter
+    @Convert(converter = ZonedDateTimeAttributeConverter.class)
+    @JsonAdapter(ZonedDateTimeAdapter.class)
+    ZonedDateTime date;
+
+    @Setter
     String mealType;
+    @Setter
     String foodName;
-    String servingsNum;
-    String caloriesPerServing;
-    String fatGramsPerServing;
-    String sodiumMilligramsPerServing;
-    String carbsGramsPerServing;
-    String sugarsGramsPerServing;
-    String fiberGramsPerServing;
-    String proteinGramsPerServing;
-    String fatGramsTotal;
-    String sodiumMilligramsTotal;
-    String carbsGramsTotal;
-    String sugarsGramsTotal;
-    String fiberGramsTotal;
-    String proteinGramsTotal;
+    @Setter
+    Integer servingsNum;
+    @Setter
+    Integer caloriesPerServing;
+    @Setter
+    Integer fatGramsPerServing;
+    @Setter
+    Integer sodiumMilligramsPerServing;
+    @Setter
+    Integer carbsGramsPerServing;
+    @Setter
+    Integer sugarsGramsPerServing;
+    @Setter
+    Integer fiberGramsPerServing;
+    @Setter
+    Integer proteinGramsPerServing;
+    @Setter
+    Integer fatGramsTotal;
+    @Setter
+    Integer sodiumMilligramsTotal;
+    @Setter
+    Integer carbsGramsTotal;
+    @Setter
+    Integer sugarsGramsTotal;
+    @Setter
+    Integer fiberGramsTotal;
+    @Setter
+    Integer proteinGramsTotal;
 
     public FoodDiary(final FoodDiaryForm form) {
-        id = form.getId();
         setDate(form.getDate());
         setMealType(form.getMealType());
         setFoodName(form.getFoodName());
@@ -54,11 +77,11 @@ public class FoodDiary {
         setSugarsGramsPerServing(form.getSugarsGramsPerServing());
         setFiberGramsPerServing(form.getFiberGramsPerServing());
         setProteinGramsPerServing(form.getProteinGramsPerServing());
-        setFatGramsTotal(form.getFatGramsTotal());
-        setSodiumMilligramsTotal(form.getSodiumMilligramsTotal());
-        setCarbsGramsTotal(form.getCarbsGramsTotal());
-        setSugarsGramsTotal(form.getSugarsGramsTotal());
-        setFiberGramsTotal(form.getFiberGramsTotal());
-        setProteinGramsTotal(form.getProteinGramsTotal());
+        setFatGramsTotal(form.getServingsNum() * form.getFatGramsPerServing());
+        setSodiumMilligramsTotal(form.getServingsNum() * form.getSodiumMilligramsPerServing());
+        setCarbsGramsTotal(form.getServingsNum() * form.getCarbsGramsPerServing());
+        setSugarsGramsTotal(form.getServingsNum() * form.getSugarsGramsPerServing());
+        setFiberGramsTotal(form.getServingsNum() * form.getFiberGramsPerServing());
+        setProteinGramsTotal(form.getServingsNum() * form.getProteinGramsPerServing());
     }
 }

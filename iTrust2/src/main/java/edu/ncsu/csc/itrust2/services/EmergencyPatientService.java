@@ -32,7 +32,9 @@ public class EmergencyPatientService {
         return patientInfo;
     }
 
-    public List<OfficeVisit> getRecentOfficeVisits (String patientName, int dateAmount){
+    public List<OfficeVisit> getRecentOfficeVisits(String patientName, int dateAmount) {
+        final Patient patient = (Patient) patientService.findByName(patientName);
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -dateAmount);
         Date startDate = calendar.getTime();
@@ -44,11 +46,8 @@ public class EmergencyPatientService {
         ZonedDateTime zoneStartDate = ZonedDateTime.ofInstant(startDateInstant, zoneId);
         ZonedDateTime zoneEndDate = ZonedDateTime.ofInstant(endDateInstant, zoneId);
 
-        List<OfficeVisit> officeVisits
-                = officeVisitRepository
-                .findByDateBetweenAndPatientIdOrderByDateDesc(zoneStartDate, zoneEndDate, patientName);
-
-        return officeVisits;
+        return officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
+                zoneStartDate, zoneEndDate, patient);
     }
     public List<Diagnosis> getRecentDiagnoses (String patientName){
         List<OfficeVisit> officeVisits = getRecentOfficeVisits(patientName, 60);

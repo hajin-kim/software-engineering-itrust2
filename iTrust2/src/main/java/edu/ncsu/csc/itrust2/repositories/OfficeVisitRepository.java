@@ -18,5 +18,5 @@ public interface OfficeVisitRepository extends JpaRepository<OfficeVisit, Long> 
     List<OfficeVisit> findByHcpAndPatient(@NotNull User hcp, @NotNull User patient);
 
     List<OfficeVisit> findByDateBetweenAndPatientOrderByDateDesc(
-            @NotNull ZonedDateTime start, @NotNull ZonedDateTime end, @NotNull User patient);
+            @NotNull ZonedDateTime begin, @NotNull ZonedDateTime end, @NotNull User patient);
 }

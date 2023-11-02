@@ -33,13 +33,12 @@ public class FoodDiaryService {
         return foodDiaryRepository.existsById(id);
     }
 
-    public FoodDiary addFoodDiary(final FoodDiaryForm form, final String patientName) {
+    public FoodDiary addFoodDiary(final FoodDiaryForm form, String patientName) {
         try {
-            final FoodDiary foodDiary = new FoodDiary(form);
             final Patient patient = (Patient) patientService.findByName(patientName);
-            foodDiary.setPatient(patient);
+            final FoodDiary foodDiary = new FoodDiary(form, patient);
 
-            // Make sure code does not conflict with existing drugs
+            // Make sure code does not conflict with existing foodDiary
             if (existsByCode(foodDiary.getId())) {
                 throw new ResponseStatusException(
                         HttpStatus.CONFLICT,
@@ -49,7 +48,7 @@ public class FoodDiaryService {
         } catch (final Exception e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "Could not create " + form.getId() + " because of " + e.getMessage());
+                    "Could not create " + form.getFoodName() + " because of " + e.getMessage());
         }
     }
 }

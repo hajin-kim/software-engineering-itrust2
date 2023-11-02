@@ -1,21 +1,16 @@
 package edu.ncsu.csc.itrust2.forms;
 
-import edu.ncsu.csc.itrust2.models.FoodDiary;
-
-import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.ZonedDateTime;
 
 /** A form for REST API communication. Contains fields for constructing FoodDiary objects. */
 @Getter
 @Setter
 @NoArgsConstructor
 public class FoodDiaryForm {
-    private Long id;
     private ZonedDateTime date;
     private String mealType;
     private String foodName;
@@ -33,5 +28,4 @@ public class FoodDiaryForm {
      *
      * @param foodDiary the food diary object
      */
-
 }

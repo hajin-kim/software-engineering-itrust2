@@ -8,6 +8,7 @@ import java.time.ZonedDateTime;
 import javax.persistence.*;
 
 import com.google.gson.annotations.JsonAdapter;
+import edu.ncsu.csc.itrust2.models.enums.MealType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,7 +32,9 @@ public class FoodDiary {
     @JsonAdapter(ZonedDateTimeAdapter.class)
     ZonedDateTime date;
 
-    @Setter String mealType;
+    @Setter
+    @Enumerated(EnumType.STRING)
+    MealType mealType;
     @Setter String foodName;
     @Setter Integer servingsNum;
     @Setter Integer caloriesPerServing;
@@ -51,7 +54,7 @@ public class FoodDiary {
     public FoodDiary(final FoodDiaryForm form, final Patient patient) {
         setDate(form.getDate());
         setPatient(patient);
-        setMealType(form.getMealType());
+        setMealType(MealType.parse(form.getMealType()));
         setFoodName(form.getFoodName());
         setServingsNum(form.getServingsNum());
         setCaloriesPerServing(form.getCaloriesPerServing());

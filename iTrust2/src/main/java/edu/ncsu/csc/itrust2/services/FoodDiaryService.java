@@ -38,12 +38,6 @@ public class FoodDiaryService {
             final Patient patient = (Patient) patientService.findByName(patientName);
             final FoodDiary foodDiary = new FoodDiary(form, patient);
 
-            // Make sure code does not conflict with existing foodDiary
-            if (existsByCode(foodDiary.getId())) {
-                throw new ResponseStatusException(
-                        HttpStatus.CONFLICT,
-                        "FoodDiary with Id " + foodDiary.getId() + " already exists");
-            }
             return foodDiaryRepository.save(foodDiary);
         } catch (final Exception e) {
             throw new ResponseStatusException(

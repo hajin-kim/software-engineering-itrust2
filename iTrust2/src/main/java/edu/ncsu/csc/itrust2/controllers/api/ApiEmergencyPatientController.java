@@ -1,6 +1,7 @@
 package edu.ncsu.csc.itrust2.controllers.api;
 
 import edu.ncsu.csc.itrust2.models.*;
+import edu.ncsu.csc.itrust2.records.EmergencyPatientInfo;
 import edu.ncsu.csc.itrust2.services.EmergencyPatientService;
 
 import java.util.*;
@@ -17,7 +18,7 @@ public class ApiEmergencyPatientController {
 
     @GetMapping("/{patientName}")
     @PreAuthorize("hasAnyRole('ROLE_HCP', 'ROLE_ER')")
-    public PatientInfo getPatientInfo(@PathVariable String patientName) {
+    public EmergencyPatientInfo getPatientInfo(@PathVariable String patientName) {
         return emergencyPatientService.getPatientInformation(patientName);
     }
 

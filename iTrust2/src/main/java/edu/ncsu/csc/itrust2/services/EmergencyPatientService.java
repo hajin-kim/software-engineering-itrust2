@@ -3,13 +3,14 @@ package edu.ncsu.csc.itrust2.services;
 import edu.ncsu.csc.itrust2.models.*;
 import edu.ncsu.csc.itrust2.repositories.DiagnosisRepository;
 import edu.ncsu.csc.itrust2.repositories.OfficeVisitRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
@@ -47,7 +48,8 @@ public class EmergencyPatientService {
         return officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
                 zoneStartDate, zoneEndDate, patient);
     }
-    public List<Diagnosis> getRecentDiagnoses (String patientName){
+
+    public List<Diagnosis> getRecentDiagnoses(String patientName) {
         List<OfficeVisit> officeVisits = getRecentOfficeVisits(patientName, 60);
 
         List<Diagnosis> diagnoses = new ArrayList<>();
@@ -59,7 +61,7 @@ public class EmergencyPatientService {
         return diagnoses;
     }
 
-    public List<Prescription> getRecentPrescriptions (String patientName){
+    public List<Prescription> getRecentPrescriptions(String patientName) {
         List<OfficeVisit> officeVisits = getRecentOfficeVisits(patientName, 90);
 
         List<Prescription> prescriptions = new ArrayList<>();

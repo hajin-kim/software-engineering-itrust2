@@ -29,9 +29,6 @@ public class FoodDiaryService {
         return foodDiaryRepository.findAllByPatient(patient);
     }
 
-    public boolean existsByCode(final Long id) {
-        return foodDiaryRepository.existsById(id);
-    }
 
     public FoodDiary addFoodDiary(final FoodDiaryForm form, String patientName) {
         try {

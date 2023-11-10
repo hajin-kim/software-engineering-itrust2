@@ -6,7 +6,15 @@ import edu.ncsu.csc.itrust2.forms.FoodDiaryForm;
 import edu.ncsu.csc.itrust2.models.enums.MealType;
 
 import java.time.ZonedDateTime;
-import javax.persistence.*;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.google.gson.annotations.JsonAdapter;
 import lombok.Getter;
@@ -54,7 +62,7 @@ public class FoodDiary {
     @Setter Integer proteinGramsTotal;
 
     public FoodDiary(final FoodDiaryForm form, final Patient patient) {
-        var servingsNum = form.getServingsNum();
+        final var servingsNum = form.getServingsNum();
         setDate(form.getDate());
         setPatient(patient);
         setMealType(MealType.parse(form.getMealType()));

@@ -13,19 +13,19 @@ import static org.junit.Assert.assertEquals;
 public class FoodDiaryTest {
     @Test
     public void testNewFromForm() {
-        var date = ZonedDateTime.of(2023, 11, 11, 12, 34, 56, 0, ZoneId.of("UTC"));
-        var patient = new Patient();
-        var foodDiaryForm =
+        final var date = ZonedDateTime.of(2023, 11, 11, 12, 34, 56, 0, ZoneId.of("UTC"));
+        final var patient = new Patient();
+        final var foodDiaryForm =
                 new FoodDiaryForm(date, "Breakfast", "foodName", 3, 10, 20, 30, 40, 50, 60, 70);
 
-        var foodDiary = new FoodDiary(foodDiaryForm, patient);
+        final var foodDiary = new FoodDiary(foodDiaryForm, patient);
 
         assertEquals(foodDiary.getPatient(), patient);
         assertFoodDiaryEquals(foodDiary, foodDiaryForm);
     }
 
     public static void assertFoodDiaryEquals(FoodDiary entity, FoodDiaryForm form) {
-        var servingsNum = form.getServingsNum().longValue();
+        final var servingsNum = form.getServingsNum().longValue();
 
         assertEquals(entity.getDate(), form.getDate());
         assertEquals(entity.getMealType(), MealType.parse(form.getMealType()));

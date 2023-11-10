@@ -45,6 +45,7 @@ public class FoodDiary {
     @Setter Integer sugarsGramsPerServing;
     @Setter Integer fiberGramsPerServing;
     @Setter Integer proteinGramsPerServing;
+    @Setter Integer caloriesTotal;
     @Setter Integer fatGramsTotal;
     @Setter Integer sodiumMilligramsTotal;
     @Setter Integer carbsGramsTotal;
@@ -53,11 +54,12 @@ public class FoodDiary {
     @Setter Integer proteinGramsTotal;
 
     public FoodDiary(final FoodDiaryForm form, final Patient patient) {
+        var servingsNum = form.getServingsNum();
         setDate(form.getDate());
         setPatient(patient);
         setMealType(MealType.parse(form.getMealType()));
         setFoodName(form.getFoodName());
-        setServingsNum(form.getServingsNum());
+        setServingsNum(servingsNum);
         setCaloriesPerServing(form.getCaloriesPerServing());
         setFatGramsPerServing(form.getFatGramsPerServing());
         setSodiumMilligramsPerServing(form.getSodiumMilligramsPerServing());
@@ -65,11 +67,12 @@ public class FoodDiary {
         setSugarsGramsPerServing(form.getSugarsGramsPerServing());
         setFiberGramsPerServing(form.getFiberGramsPerServing());
         setProteinGramsPerServing(form.getProteinGramsPerServing());
-        setFatGramsTotal(form.getServingsNum() * form.getFatGramsPerServing());
-        setSodiumMilligramsTotal(form.getServingsNum() * form.getSodiumMilligramsPerServing());
-        setCarbsGramsTotal(form.getServingsNum() * form.getCarbsGramsPerServing());
-        setSugarsGramsTotal(form.getServingsNum() * form.getSugarsGramsPerServing());
-        setFiberGramsTotal(form.getServingsNum() * form.getFiberGramsPerServing());
-        setProteinGramsTotal(form.getServingsNum() * form.getProteinGramsPerServing());
+        setCaloriesTotal(servingsNum * form.getCaloriesPerServing());
+        setFatGramsTotal(servingsNum * form.getFatGramsPerServing());
+        setSodiumMilligramsTotal(servingsNum * form.getSodiumMilligramsPerServing());
+        setCarbsGramsTotal(servingsNum * form.getCarbsGramsPerServing());
+        setSugarsGramsTotal(servingsNum * form.getSugarsGramsPerServing());
+        setFiberGramsTotal(servingsNum * form.getFiberGramsPerServing());
+        setProteinGramsTotal(servingsNum * form.getProteinGramsPerServing());
     }
 }

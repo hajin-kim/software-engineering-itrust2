@@ -1,10 +1,11 @@
 package edu.ncsu.csc.itrust2.models;
 
+import edu.ncsu.csc.itrust2.forms.FoodDiaryForm;
+import edu.ncsu.csc.itrust2.models.enums.MealType;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import edu.ncsu.csc.itrust2.forms.FoodDiaryForm;
-import edu.ncsu.csc.itrust2.models.enums.MealType;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -14,17 +15,8 @@ public class FoodDiaryTest {
     public void testNewFromForm() {
         var date = ZonedDateTime.of(2023, 11, 11, 12, 34, 56, 0, ZoneId.of("UTC"));
         var patient = new Patient();
-        var foodDiaryForm = new FoodDiaryForm(date,
-                "Breakfast",
-                "foodName",
-                3,
-                10,
-                20,
-                30,
-                40,
-                50,
-                60,
-                70);
+        var foodDiaryForm =
+                new FoodDiaryForm(date, "Breakfast", "foodName", 3, 10, 20, 30, 40, 50, 60, 70);
 
         var foodDiary = new FoodDiary(foodDiaryForm, patient);
 
@@ -46,12 +38,24 @@ public class FoodDiaryTest {
         assertEquals(entity.getSugarsGramsPerServing(), form.getSugarsGramsPerServing());
         assertEquals(entity.getFiberGramsPerServing(), form.getFiberGramsPerServing());
         assertEquals(entity.getProteinGramsPerServing(), form.getProteinGramsPerServing());
-        assertEquals(entity.getCaloriesTotal().longValue(), servingsNum* form.getCaloriesPerServing() );
-        assertEquals(entity.getFatGramsTotal().longValue(), servingsNum* form.getFatGramsPerServing() );
-        assertEquals(entity.getSodiumMilligramsTotal().longValue(), servingsNum* form.getSodiumMilligramsPerServing() );
-        assertEquals(entity.getCarbsGramsTotal().longValue(), servingsNum* form.getCarbsGramsPerServing() );
-        assertEquals(entity.getSugarsGramsTotal().longValue(), servingsNum* form.getSugarsGramsPerServing() );
-        assertEquals(entity.getFiberGramsTotal().longValue(), servingsNum* form.getFiberGramsPerServing() );
-        assertEquals(entity.getProteinGramsTotal().longValue(), servingsNum* form.getProteinGramsPerServing() );
+        assertEquals(
+                entity.getCaloriesTotal().longValue(), servingsNum * form.getCaloriesPerServing());
+        assertEquals(
+                entity.getFatGramsTotal().longValue(), servingsNum * form.getFatGramsPerServing());
+        assertEquals(
+                entity.getSodiumMilligramsTotal().longValue(),
+                servingsNum * form.getSodiumMilligramsPerServing());
+        assertEquals(
+                entity.getCarbsGramsTotal().longValue(),
+                servingsNum * form.getCarbsGramsPerServing());
+        assertEquals(
+                entity.getSugarsGramsTotal().longValue(),
+                servingsNum * form.getSugarsGramsPerServing());
+        assertEquals(
+                entity.getFiberGramsTotal().longValue(),
+                servingsNum * form.getFiberGramsPerServing());
+        assertEquals(
+                entity.getProteinGramsTotal().longValue(),
+                servingsNum * form.getProteinGramsPerServing());
     }
 }

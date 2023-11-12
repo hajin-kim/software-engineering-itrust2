@@ -215,4 +215,13 @@ public class User extends DomainObject {
     public boolean isPatient() {
         return roles.contains(Role.ROLE_PATIENT);
     }
+
+    /**
+     * Checks if a user is a Patient.
+     *
+     * @return true if the user has the `ROLE_HCP` role
+     */
+    public boolean isHCP() {
+        return roles.contains(Role.ROLE_HCP);
+    }
 }

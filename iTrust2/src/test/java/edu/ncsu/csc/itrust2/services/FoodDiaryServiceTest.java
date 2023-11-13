@@ -62,19 +62,12 @@ public class FoodDiaryServiceTest {
 
     @Test
     public void testListByPatient() {
-        final var date = ZonedDateTime.of(2023, 11, 11, 12, 34, 56, 0, ZoneId.of("UTC"));
-
         final var patient = new Patient();
         List<FoodDiary> foodDiaryList = new ArrayList<FoodDiary>();
 
-        final var foodDiaryForm =
-                new FoodDiaryForm(date, "Breakfast", "foodName", 3, 10, 20, 30, 40, 50, 60, 70);
-
         given(patientService.findByName(any(String.class))).willReturn(patient);
 
-        given(foodDiaryRepository.findAllByPatient(any(Patient.class))).willReturn(foodDiaryList);
-
-        foodDiaryService.addFoodDiary(foodDiaryForm, "patient");
+        given(foodDiaryRepository.findAllByPatient(patient)).willReturn(foodDiaryList);
 
         final var result = foodDiaryService.listByPatient("patient");
 

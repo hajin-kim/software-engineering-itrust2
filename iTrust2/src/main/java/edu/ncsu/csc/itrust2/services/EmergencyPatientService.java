@@ -37,7 +37,7 @@ public class EmergencyPatientService {
         String currentUserName = LoggerUtil.currentUser();
         User currentUser = userService.findByName(currentUserName);
 
-        if (currentUser.isHCP()){
+        if (currentUser.isDoctor()){
             loggerUtil.log(
                     TransactionType.HCP_VIEW_ER,
                     currentUserName,

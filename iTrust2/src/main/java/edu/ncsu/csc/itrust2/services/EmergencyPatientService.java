@@ -1,6 +1,11 @@
 package edu.ncsu.csc.itrust2.services;
 
-import edu.ncsu.csc.itrust2.models.*;
+import edu.ncsu.csc.itrust2.models.Diagnosis;
+import edu.ncsu.csc.itrust2.models.OfficeVisit;
+import edu.ncsu.csc.itrust2.models.Patient;
+import edu.ncsu.csc.itrust2.models.Prescription;
+import edu.ncsu.csc.itrust2.models.User;
+
 import edu.ncsu.csc.itrust2.models.enums.TransactionType;
 import edu.ncsu.csc.itrust2.records.EmergencyPatientInfo;
 import edu.ncsu.csc.itrust2.repositories.DiagnosisRepository;
@@ -32,7 +37,7 @@ public class EmergencyPatientService {
 
         final Patient patient = (Patient) patientService.findByName(patientName);
 
-        String currentUserName = loggerUtil.currentUser();
+        String currentUserName = loggerUtil.getCurrentUsername();
         User currentUser = userService.findByName(currentUserName);
 
         if (currentUser.isDoctor()) {

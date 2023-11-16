@@ -206,4 +206,8 @@ public class User extends DomainObject {
     public boolean isDoctor() {
         return roles.contains(Role.ROLE_HCP);
     }
+
+    public boolean isPatient() {
+        return roles.contains(Role.ROLE_PATIENT);
+    }
 }

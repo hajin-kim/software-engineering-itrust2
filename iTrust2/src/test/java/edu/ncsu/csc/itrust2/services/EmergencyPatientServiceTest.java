@@ -109,29 +109,4 @@ public class EmergencyPatientServiceTest {
         // Verify the result
         assertEquals(expectedOfficeVisits, result);
     }
-
-    //    @Test
-    //    public void testAddFoodDiaryFailure() {
-    //        given(patientService.findByName(any(String.class))).willThrow(RuntimeException.class);
-    //
-    //        final var foodDiaryForm = new FoodDiaryForm();
-    //
-    //        assertThrows(
-    //                ResponseStatusException.class,
-    //                () -> foodDiaryService.addFoodDiary(foodDiaryForm, "patient"));
-    //    }
-    //
-    //    @Test
-    //    public void testListByPatient() {
-    //        final var patient = new Patient();
-    //        List<FoodDiary> foodDiaryList = new ArrayList<FoodDiary>();
-    //
-    //        given(patientService.findByName(any(String.class))).willReturn(patient);
-    //
-    //        given(foodDiaryRepository.findAllByPatient(patient)).willReturn(foodDiaryList);
-    //
-    //        final var result = foodDiaryService.listByPatient("patient");
-    //
-    //        assertEquals(result, foodDiaryList);
-    //    }
 }

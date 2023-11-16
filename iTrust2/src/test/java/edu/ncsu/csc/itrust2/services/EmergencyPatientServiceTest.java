@@ -12,10 +12,8 @@ import edu.ncsu.csc.itrust2.repositories.DiagnosisRepository;
 import edu.ncsu.csc.itrust2.repositories.OfficeVisitRepository;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmergencyPatientServiceTest {
@@ -65,8 +62,6 @@ public class EmergencyPatientServiceTest {
 
         // Mock interactions
         given(patientService.findByName(anyString())).willReturn(patient);
-        //
-        //        given(loggerUtil.currentUser()).willReturn(currentUserName);
         given(userService.findByName(anyString())).willReturn(currentUser);
 
         // Test the method
@@ -81,6 +76,7 @@ public class EmergencyPatientServiceTest {
         assertEquals(patient.getGender(), result.gender());
         assertEquals(patient.getBloodType(), result.bloodType());
     }
+
     @Test
     public void testGetRecentOfficeVisits() {
         // Mock patient
@@ -97,13 +93,9 @@ public class EmergencyPatientServiceTest {
         OfficeVisit officeVisit1 = new OfficeVisit();
         officeVisit1.setPatient(patient);
         officeVisit1.setHcp(HCP);
-        officeVisit1.setBasicHealthMetrics();// 이거 어캐 만듬?
         officeVisit1.setDate(ZonedDateTime.now()); // Set the date to the current date
         officeVisit1.setType(AppointmentType.GENERAL_CHECKUP);
-        officeVisit1.setHospital();// 이건 어캐만듬?
-        officeVisit1.setDiagnoses();// 어캐 만들라는 거야
         officeVisit1.setNotes("Regular checkup");
-        officeVisit1.setPrescriptions(); // 날 화나게 하지 마
         expectedOfficeVisits.add(officeVisit1);
 
         // Mock interactions

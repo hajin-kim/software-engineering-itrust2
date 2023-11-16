@@ -1,7 +1,9 @@
 package edu.ncsu.csc.itrust2.services;
 
+import edu.ncsu.csc.itrust2.models.OfficeVisit;
 import edu.ncsu.csc.itrust2.models.Patient;
 import edu.ncsu.csc.itrust2.models.Personnel;
+import edu.ncsu.csc.itrust2.models.enums.AppointmentType;
 import edu.ncsu.csc.itrust2.models.enums.BloodType;
 import edu.ncsu.csc.itrust2.models.enums.Gender;
 import edu.ncsu.csc.itrust2.models.enums.Role;
@@ -10,8 +12,13 @@ import edu.ncsu.csc.itrust2.repositories.DiagnosisRepository;
 import edu.ncsu.csc.itrust2.repositories.OfficeVisitRepository;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -21,8 +28,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmergencyPatientServiceTest {
@@ -37,6 +46,7 @@ public class EmergencyPatientServiceTest {
 
     @Test
     public void testGetPatientInformation() {
+        // Mock patient
         String patientName = "TestPatient";
         final var patient = new Patient();
         patient.setUsername(patientName);
@@ -47,17 +57,22 @@ public class EmergencyPatientServiceTest {
         patient.setBloodType(BloodType.parse("A+"));
         patient.setRoles(Set.of(Role.ROLE_PATIENT));
 
+        // Mock User
         String currentUserName = "TestUser";
+        final var currentUser = new Personnel();
         currentUser.setUsername(currentUserName);
         currentUser.setRoles(Set.of(Role.ROLE_HCP));
 
+        // Mock interactions
         given(patientService.findByName(anyString())).willReturn(patient);
         //
         //        given(loggerUtil.currentUser()).willReturn(currentUserName);
         given(userService.findByName(anyString())).willReturn(currentUser);
 
+        // Test the method
         EmergencyPatientInfo result = emergencyPatientService.getPatientInformation(patientName);
 
+        // Verify the result
         assertEquals(patient.getUsername(), result.username());
         assertEquals(patient.getFirstName(), result.firstName());
         assertEquals(patient.getPreferredName(), result.preferredName());
@@ -65,6 +80,42 @@ public class EmergencyPatientServiceTest {
         assertEquals(patient.getDateOfBirth(), result.dateOfBirth());
         assertEquals(patient.getGender(), result.gender());
         assertEquals(patient.getBloodType(), result.bloodType());
+    }
+    @Test
+    public void testGetRecentOfficeVisits() {
+        // Mock patient
+        String patientName = "TestPatient";
+        final var patient = new Patient();
+        patient.setUsername(patientName);
+
+        String HCPName = "TestHCP";
+        final var HCP = new Personnel();
+        HCP.setFirstName(HCPName);
+
+        // Mock office visits
+        List<OfficeVisit> expectedOfficeVisits = new ArrayList<>();
+        OfficeVisit officeVisit1 = new OfficeVisit();
+        officeVisit1.setPatient(patient);
+        officeVisit1.setHcp(HCP);
+        officeVisit1.setBasicHealthMetrics();// 이거 어캐 만듬?
+        officeVisit1.setDate(ZonedDateTime.now()); // Set the date to the current date
+        officeVisit1.setType(AppointmentType.GENERAL_CHECKUP);
+        officeVisit1.setHospital();// 이건 어캐만듬?
+        officeVisit1.setDiagnoses();// 어캐 만들라는 거야
+        officeVisit1.setNotes("Regular checkup");
+        officeVisit1.setPrescriptions(); // 날 화나게 하지 마
+        expectedOfficeVisits.add(officeVisit1);
+
+        // Mock interactions
+        given(patientService.findByName(anyString())).willReturn(patient);
+        given(officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(any(), any(), any()))
+                .willReturn(expectedOfficeVisits);
+
+        // Test the method with specific dates
+        List<OfficeVisit> result = emergencyPatientService.getRecentOfficeVisits(patientName, 7);
+
+        // Verify the result
+        assertEquals(expectedOfficeVisits, result);
     }
 
     //    @Test

@@ -62,7 +62,7 @@ public class EmergencyPatientServiceTest {
 
         // Mock interactions
         given(patientService.findByName(anyString())).willReturn(patient);
-        given(userService.findByName(anyString())).willReturn(currentUser);
+        given(loggerUtil.getCurrentUsername()).willReturn(currentUserName);
 
         // Test the method
         EmergencyPatientInfo result = emergencyPatientService.getPatientInformation(patientName);

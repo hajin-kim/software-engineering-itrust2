@@ -5,7 +5,6 @@ import edu.ncsu.csc.itrust2.models.OfficeVisit;
 import edu.ncsu.csc.itrust2.models.Patient;
 import edu.ncsu.csc.itrust2.models.Prescription;
 import edu.ncsu.csc.itrust2.models.User;
-
 import edu.ncsu.csc.itrust2.models.enums.TransactionType;
 import edu.ncsu.csc.itrust2.records.EmergencyPatientInfo;
 import edu.ncsu.csc.itrust2.repositories.DiagnosisRepository;

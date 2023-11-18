@@ -1,4 +1,5 @@
 package edu.ncsu.csc.itrust2.repositories;
 
-public interface PersonalRepresentationRepository {
+@Repository
+public interface PersonalRepresentationRepository: JpaRepository<> {
 }

@@ -3,7 +3,7 @@ package edu.ncsu.csc.itrust2.services;
 import java.util.List;
 
 import edu.ncsu.csc.itrust2.models.Patient;
-import edu.ncsu.csc.itrust2.models.PersonalRepresentatives;
+import edu.ncsu.csc.itrust2.models.PersonalRepresentation;
 import edu.ncsu.csc.itrust2.repositories.PersonalRepresentationRepository;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ public class PersonalRepresentationService {
     private final UserService userService;
     private final LoggerUtil loggerUtil;
     private final PersonalRepresentationRepository personalRepresentationRepository;
-    public List<PersonalRepresentatives> listByPatient(String patientName) {
+    public List<PersonalRepresentation> listByPatient(String patientName) {
         final Patient patient = (Patient) patientService.findByName(patientName);
         return personalRepresentationRepository.findAllByPatient(patient);
     }
-    public List<PersonalRepresentatives> listByRepresenting(String patientName) {
+    public List<PersonalRepresentation> listByRepresenting(String patientName) {
         final Patient patient = (Patient) patientService.findByName(patientName);
-        return personalRepresentationRepository.findALLByPr(patient);
+        return personalRepresentationRepository.findALLByPersonalRepresentative(patient);
     }
 }

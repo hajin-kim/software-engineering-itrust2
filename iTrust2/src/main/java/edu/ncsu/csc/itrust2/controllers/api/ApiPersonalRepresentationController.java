@@ -1,7 +1,7 @@
 package edu.ncsu.csc.itrust2.controllers.api;
 
 
-import edu.ncsu.csc.itrust2.models.PersonalRepresentatives;
+import edu.ncsu.csc.itrust2.models.PersonalRepresentation;
 import edu.ncsu.csc.itrust2.services.PersonalRepresentationService;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,23 +22,28 @@ public class ApiPersonalRepresentationController {
 
     @GetMapping("/representatives")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public List<PersonalRepresentatives> listPersonalRepresentativesByCurrentPatient() {
+    public List<PersonalRepresentation> listPersonalRepresentativesByCurrentPatient() {
         final String patientName = loggerUtil.getCurrentUsername();
         return personalRepresentationService.listByPatient(patientName);
     }
 
     @GetMapping("/representingPatients")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public List<PersonalRepresentatives> listPersonalRepresentingByCurrentPatient() {
+    public List<PersonalRepresentation> listPersonalRepresentingByCurrentPatient() {
         final String patientName = loggerUtil.getCurrentUsername();
         return personalRepresentationService.listByRepresenting(patientName);
     }
 
     @GetMapping("patients/{patientUsername}/representingPatients")
     @PreAuthorize("hasRole('ROLE_HCP')")
-    public List<PersonalRepresentatives> listPersonalRepresentingByPatientId(@PathVariable final String patientUsername) {
+    public List<PersonalRepresentation> listPersonalRepresentingByPatientId(@PathVariable final String patientUsername) {
         return personalRepresentationService.listByRepresenting(patientUsername);
     }
 
+    @GetMapping("patients/{patientUsername}/representatives")
+    @PreAuthorize("hasRole('ROLE_HCP')")
+    public List<PersonalRepresentation> listPersonalRepresentativesByPatientId(@PathVariable final String patientUsername) {
+        return personalRepresentationService.listByPatient(patientUsername);
+    }
 
 }

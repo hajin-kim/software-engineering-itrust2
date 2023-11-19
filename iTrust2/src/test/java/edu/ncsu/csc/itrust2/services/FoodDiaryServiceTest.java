@@ -17,12 +17,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FoodDiaryServiceTest {
@@ -30,9 +32,12 @@ public class FoodDiaryServiceTest {
 
     @Mock private PatientService patientService;
 
+    @Mock private UserService userService;
+
     @InjectMocks private FoodDiaryService foodDiaryService;
 
     @Mock private LoggerUtil loggerUtil;
+
 
     @Test
     public void testAddFoodDiarySuccess() {
@@ -65,7 +70,12 @@ public class FoodDiaryServiceTest {
 
     @Test
     public void testListByPatient() {
-        final var patient = new Patient(new UserForm("testUser", "123456", Role.ROLE_PATIENT, 1));
+        final String patientUsername = "patientUser";
+        final UserForm userForm = new UserForm(patientUsername, "123456", Role.ROLE_PATIENT, 1);
+        final Patient patient = new Patient(userForm);
+
+        when(loggerUtil.getCurrentUsername()).thenReturn(patientUsername);
+        when(userService.findByName(patientUsername)).thenReturn(patient);
 
         List<FoodDiary> foodDiaryList = new ArrayList<FoodDiary>();
 
@@ -73,7 +83,7 @@ public class FoodDiaryServiceTest {
 
         given(foodDiaryRepository.findAllByPatient(patient)).willReturn(foodDiaryList);
 
-        final var result = foodDiaryService.listByPatient("patient");
+        final List<FoodDiary> result = foodDiaryService.listByPatient("patient");
 
         assertEquals(result, foodDiaryList);
     }

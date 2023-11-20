@@ -15,7 +15,7 @@ public class ApiPersonalRepresentationController {
     private final PersonalRepresentationService personalRepresentationService;
     private final LoggerUtil loggerUtil;
 
-    @GetMapping("/representatives")
+    @GetMapping("/personalRepresentatives")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public List<PersonalRepresentation> listPersonalRepresentativesByCurrentPatient() {
         final String patientName = loggerUtil.getCurrentUsername();

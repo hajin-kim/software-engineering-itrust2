@@ -32,12 +32,9 @@ public class FoodDiaryServiceTest {
 
     @Mock private PatientService patientService;
 
-    @Mock private UserService userService;
-
     @InjectMocks private FoodDiaryService foodDiaryService;
 
     @Mock private LoggerUtil loggerUtil;
-
 
     @Test
     public void testAddFoodDiarySuccess() {
@@ -70,20 +67,19 @@ public class FoodDiaryServiceTest {
 
     @Test
     public void testListByPatient() {
-        final String patientUsername = "patientUser";
-        final UserForm userForm = new UserForm(patientUsername, "123456", Role.ROLE_PATIENT, 1);
-        final Patient patient = new Patient(userForm);
+        final String patientUsername1 = "patientUser1";
+        final UserForm userForm = new UserForm(patientUsername1, "123456", Role.ROLE_PATIENT, 1);
+        final Patient patientUser1 = new Patient(userForm);
 
-        when(loggerUtil.getCurrentUsername()).thenReturn(patientUsername);
-        when(userService.findByName(patientUsername)).thenReturn(patient);
+        when(loggerUtil.getCurrentUsername()).thenReturn(patientUsername1);
+        when(patientService.findByName(patientUsername1)).thenReturn(patientUser1);
 
         List<FoodDiary> foodDiaryList = new ArrayList<FoodDiary>();
 
-        given(patientService.findByName(any(String.class))).willReturn(patient);
+        given(patientService.findByName(any(String.class))).willReturn(patientUser1);
+        given(foodDiaryRepository.findAllByPatient(patientUser1)).willReturn(foodDiaryList);
 
-        given(foodDiaryRepository.findAllByPatient(patient)).willReturn(foodDiaryList);
-
-        final List<FoodDiary> result = foodDiaryService.listByPatient("patient");
+        final List<FoodDiary> result = foodDiaryService.listByPatient("patientUser1");
 
         assertEquals(result, foodDiaryList);
     }

@@ -29,7 +29,7 @@ public class ApiPersonalRepresentationController {
         return personalRepresentationService.listByRepresenting(patientName);
     }
 
-    @GetMapping("patients/{patientUsername}/representingPatients")
+    @GetMapping("/patients/{patientUsername}/representingPatients")
     @PreAuthorize("hasRole('ROLE_HCP')")
     public List<PersonalRepresentation> listPersonalRepresentingByPatientId(@PathVariable final String patientUsername) {
         return personalRepresentationService.listByRepresenting(patientUsername);

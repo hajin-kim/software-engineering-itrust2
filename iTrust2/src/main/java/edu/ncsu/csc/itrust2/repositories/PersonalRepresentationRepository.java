@@ -17,5 +17,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PersonalRepresentationRepository extends JpaRepository<PersonalRepresentation, Long> {
     List<PersonalRepresentation> findAllByPatient(Patient patient);
-    List<PersonalRepresentation> findALLByPersonalRepresentative(Patient patient);
+    List<PersonalRepresentation> findAllByPersonalRepresentative(Patient personalRepresentative);
 }

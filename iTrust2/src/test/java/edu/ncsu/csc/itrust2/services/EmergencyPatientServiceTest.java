@@ -44,7 +44,7 @@ public class EmergencyPatientServiceTest {
     @InjectMocks private EmergencyPatientService emergencyPatientService;
 
     @Test
-    public void testGetPatientInformation() {
+    public void testGetPatientInformationAsDoctor() {
         String patientName = "TestPatient";
         final Patient patient = new Patient();
         patient.setUsername(patientName);
@@ -75,12 +75,44 @@ public class EmergencyPatientServiceTest {
         assertEquals(patient.getBloodType(), result.bloodType());
     }
 
+    @Test
+    public void testGetPatientInformationAsER() {
+        String patientName = "TestPatient";
+        final Patient patient = new Patient();
+        patient.setUsername(patientName);
+        patient.setFirstName("John");
+        patient.setLastName("Doe");
+        patient.setDateOfBirth(LocalDate.of(1990, Month.JANUARY, 1));
+        patient.setGender(Gender.parse("Male"));
+        patient.setBloodType(BloodType.parse("A+"));
+        patient.setRoles(Set.of(Role.ROLE_PATIENT));
+
+        String currentUserName = "TestUser";
+        final Personnel currentUser = new Personnel();
+        currentUser.setUsername(currentUserName);
+        currentUser.setRoles(Set.of(Role.ROLE_ER));
+
+        given(patientService.findByName(eq(patientName))).willReturn(patient);
+        given(patientService.findByName(eq(currentUserName))).willReturn(currentUser);
+        given(loggerUtil.getCurrentUsername()).willReturn(currentUserName);
+
+        EmergencyPatientInfo result = emergencyPatientService.getPatientInformation(patientName);
+
+        assertEquals(patient.getUsername(), result.username());
+        assertEquals(patient.getFirstName(), result.firstName());
+        assertEquals(patient.getPreferredName(), result.preferredName());
+        assertEquals(patient.getLastName(), result.lastName());
+        assertEquals(patient.getDateOfBirth(), result.dateOfBirth());
+        assertEquals(patient.getGender(), result.gender());
+        assertEquals(patient.getBloodType(), result.bloodType());
+    }
+
     private void mockGetRecentOfficeVisits(String givenPatientName, List<OfficeVisit> expected) {
         final var patient = new Patient();
         given(patientService.findByName(givenPatientName)).willReturn(patient);
         given(
-                officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
-                        any(), any(), eq(patient)))
+                        officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
+                                any(), any(), eq(patient)))
                 .willReturn(expected);
     }
 
@@ -100,8 +132,8 @@ public class EmergencyPatientServiceTest {
 
         given(patientService.findByName(eq(patientName))).willReturn(patient);
         given(
-                officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
-                        any(), any(), eq(patient)))
+                        officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
+                                any(), any(), eq(patient)))
                 .willReturn(expectedOfficeVisits);
 
         List<OfficeVisit> result = emergencyPatientService.getRecentOfficeVisits(patientName, 7);

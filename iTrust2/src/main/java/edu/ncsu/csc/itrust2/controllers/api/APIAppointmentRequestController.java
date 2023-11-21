@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Kai Presler-Marshall
  * @author Matt Dzwonczyk
  */
-@Tag(name = "[UC20] 안과 예약 요청 생성 API")
+@Tag(name = "[UC20] 예약 요청 생성 API (일반/안과)")
 @RestController
 @RequiredArgsConstructor
 @SuppressWarnings({"unchecked", "rawtypes"})

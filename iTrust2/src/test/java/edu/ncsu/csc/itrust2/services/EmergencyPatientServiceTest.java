@@ -12,12 +12,17 @@ import edu.ncsu.csc.itrust2.repositories.DiagnosisRepository;
 import edu.ncsu.csc.itrust2.repositories.OfficeVisitRepository;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +32,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
@@ -38,9 +42,6 @@ public class EmergencyPatientServiceTest {
     @Mock private OfficeVisitRepository officeVisitRepository;
     @Mock private PatientService patientService;
 
-    @Mock(lenient = true)
-    private UserService userService;
-
     @Mock private LoggerUtil loggerUtil;
 
     @InjectMocks private EmergencyPatientService emergencyPatientService;
@@ -49,7 +50,7 @@ public class EmergencyPatientServiceTest {
     public void testGetPatientInformation() {
         // Mock patient
         String patientName = "TestPatient";
-        final var patient = new Patient();
+        final Patient patient = new Patient();
         patient.setUsername(patientName);
         patient.setFirstName("John");
         patient.setLastName("Doe");
@@ -60,14 +61,14 @@ public class EmergencyPatientServiceTest {
 
         // Mock User
         String currentUserName = "TestUser";
-        final var currentUser = new Personnel();
+        final Personnel currentUser = new Personnel();
         currentUser.setUsername(currentUserName);
         currentUser.setRoles(Set.of(Role.ROLE_HCP));
 
         // Mock interactions
-        given(patientService.findByName(anyString())).willReturn(patient);
+        given(patientService.findByName(eq(patientName))).willReturn(patient);
+        given(patientService.findByName(eq(currentUserName))).willReturn(currentUser);
         given(loggerUtil.getCurrentUsername()).willReturn(currentUserName);
-        given(userService.findByName(eq(currentUserName))).willReturn(currentUser);
 
         // Test the method
         EmergencyPatientInfo result = emergencyPatientService.getPatientInformation(patientName);
@@ -86,30 +87,41 @@ public class EmergencyPatientServiceTest {
     public void testGetRecentOfficeVisits() {
         // Mock patient
         String patientName = "TestPatient";
-        final var patient = new Patient();
+        final Patient patient = new Patient();
         patient.setUsername(patientName);
-
-        String HCPName = "TestHCP";
-        final var HCP = new Personnel();
-        HCP.setFirstName(HCPName);
 
         // Mock office visits
         List<OfficeVisit> expectedOfficeVisits = new ArrayList<>();
         OfficeVisit officeVisit1 = new OfficeVisit();
         officeVisit1.setPatient(patient);
-        officeVisit1.setHcp(HCP);
-        officeVisit1.setDate(ZonedDateTime.now()); // Set the date to the current date
+        officeVisit1.setDate(ZonedDateTime.now());
         officeVisit1.setType(AppointmentType.GENERAL_CHECKUP);
         officeVisit1.setNotes("Regular checkup");
         expectedOfficeVisits.add(officeVisit1);
 
+        int dateAmount = 7;
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -dateAmount);
+        Date startDate = calendar.getTime();
+        Date endDate = new Date();
+
+        Instant startDateInstant = startDate.toInstant();
+        Instant endDateInstant = endDate.toInstant();
+        ZoneId zoneId = TimeZone.getDefault().toZoneId();
+        ZonedDateTime zoneStartDate = ZonedDateTime.ofInstant(startDateInstant, zoneId);
+        ZonedDateTime zoneEndDate = ZonedDateTime.ofInstant(endDateInstant, zoneId);
+
         // Mock interactions
-        given(patientService.findByName(anyString())).willReturn(patient);
-        given(officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(any(), any(), any()))
+        given(patientService.findByName(eq(patientName))).willReturn(patient);
+        given(
+                        officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
+                                any(), any(), eq(patient)))
                 .willReturn(expectedOfficeVisits);
 
-        // Test the method with specific dates
-        List<OfficeVisit> result = emergencyPatientService.getRecentOfficeVisits(patientName, 7);
+        // Test the method
+        List<OfficeVisit> result =
+                emergencyPatientService.getRecentOfficeVisits(patientName, dateAmount);
 
         // Verify the result
         assertEquals(expectedOfficeVisits, result);

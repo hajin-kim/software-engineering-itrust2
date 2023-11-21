@@ -58,11 +58,11 @@ public class ApiPersonalRepresentationController {
         return personalRepresentationService.listByPatient(patientUsername);
     }
 
-    @DeleteMapping("/representatives/{representativeUsername}")
+    @DeleteMapping("/personalRepresentatives/{personalRepresentativeUsername}")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public void cancelRepresentative(@PathVariable String representativeUsername) {
+    public void cancelPersonalRepresentative(@PathVariable String personalRepresentativeUsername) {
         String currentUsername = loggerUtil.getCurrentUsername();
-        personalRepresentationService.cancelPersonalRepresentation(currentUsername, representativeUsername);
+        personalRepresentationService.cancelPersonalRepresentation(currentUsername, personalRepresentativeUsername);
     }
 
     @DeleteMapping("/representingPatients/{patientUsername}")

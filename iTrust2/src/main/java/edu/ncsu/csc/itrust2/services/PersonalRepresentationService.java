@@ -9,6 +9,12 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import edu.ncsu.csc.itrust2.models.Patient;
+import edu.ncsu.csc.itrust2.models.PersonalRepresentation;
+import edu.ncsu.csc.itrust2.repositories.PersonalRepresentationRepository;
+import edu.ncsu.csc.itrust2.utils.LoggerUtil;
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PersonalRepresentationService {

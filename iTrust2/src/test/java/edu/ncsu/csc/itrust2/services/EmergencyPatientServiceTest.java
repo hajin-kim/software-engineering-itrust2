@@ -1,8 +1,10 @@
 package edu.ncsu.csc.itrust2.services;
 
+import edu.ncsu.csc.itrust2.models.Diagnosis;
 import edu.ncsu.csc.itrust2.models.OfficeVisit;
 import edu.ncsu.csc.itrust2.models.Patient;
 import edu.ncsu.csc.itrust2.models.Personnel;
+import edu.ncsu.csc.itrust2.models.Prescription;
 import edu.ncsu.csc.itrust2.models.enums.AppointmentType;
 import edu.ncsu.csc.itrust2.models.enums.BloodType;
 import edu.ncsu.csc.itrust2.models.enums.Gender;
@@ -12,17 +14,12 @@ import edu.ncsu.csc.itrust2.repositories.DiagnosisRepository;
 import edu.ncsu.csc.itrust2.repositories.OfficeVisitRepository;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,6 +80,15 @@ public class EmergencyPatientServiceTest {
         assertEquals(patient.getBloodType(), result.bloodType());
     }
 
+    void mockGetRecentOfficeVisits(String givenPatientName, List<OfficeVisit> expected) {
+        final var patient = new Patient();
+        given(patientService.findByName(givenPatientName)).willReturn(patient);
+        given(
+                        officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
+                                any(), any(), eq(patient)))
+                .willReturn(expected);
+    }
+
     @Test
     public void testGetRecentOfficeVisits() {
         // Mock patient
@@ -99,19 +105,6 @@ public class EmergencyPatientServiceTest {
         officeVisit1.setNotes("Regular checkup");
         expectedOfficeVisits.add(officeVisit1);
 
-        int dateAmount = 7;
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -dateAmount);
-        Date startDate = calendar.getTime();
-        Date endDate = new Date();
-
-        Instant startDateInstant = startDate.toInstant();
-        Instant endDateInstant = endDate.toInstant();
-        ZoneId zoneId = TimeZone.getDefault().toZoneId();
-        ZonedDateTime zoneStartDate = ZonedDateTime.ofInstant(startDateInstant, zoneId);
-        ZonedDateTime zoneEndDate = ZonedDateTime.ofInstant(endDateInstant, zoneId);
-
         // Mock interactions
         given(patientService.findByName(eq(patientName))).willReturn(patient);
         given(
@@ -120,10 +113,78 @@ public class EmergencyPatientServiceTest {
                 .willReturn(expectedOfficeVisits);
 
         // Test the method
-        List<OfficeVisit> result =
-                emergencyPatientService.getRecentOfficeVisits(patientName, dateAmount);
+        List<OfficeVisit> result = emergencyPatientService.getRecentOfficeVisits(patientName, 7);
 
         // Verify the result
         assertEquals(expectedOfficeVisits, result);
+    }
+
+    @Test
+    public void testGetRecentDiagnoses() {
+        // Mock patient
+        String patientName = "TestPatient";
+        final Patient patient = new Patient();
+        patient.setUsername(patientName);
+
+        // Mock office visits
+        List<OfficeVisit> expectedOfficeVisits = new ArrayList<>();
+        OfficeVisit officeVisit1 = new OfficeVisit();
+        officeVisit1.setPatient(patient);
+        officeVisit1.setDate(ZonedDateTime.now());
+        officeVisit1.setType(AppointmentType.GENERAL_CHECKUP);
+        officeVisit1.setNotes("Regular checkup");
+        expectedOfficeVisits.add(officeVisit1);
+
+        // Mock diagnosis
+        List<Diagnosis> expectedDiagnosis = new ArrayList<>();
+        Diagnosis diagnosis1 = new Diagnosis();
+        diagnosis1.setVisit(officeVisit1);
+        expectedDiagnosis.add(diagnosis1);
+
+        Diagnosis diagnosis2 = new Diagnosis();
+        diagnosis2.setVisit(officeVisit1);
+        expectedDiagnosis.add(diagnosis2);
+
+        // Mock interactions
+        mockGetRecentOfficeVisits(patientName, expectedOfficeVisits);
+        given(diagnosisRepository.findByVisit(eq(officeVisit1))).willReturn(expectedDiagnosis);
+
+        // Test the method
+        List<Diagnosis> result = emergencyPatientService.getRecentDiagnoses(patientName);
+
+        // Verify the result
+        assertEquals(expectedDiagnosis, result);
+    }
+
+    @Test
+    public void testGetRecentPrescriptions() {
+        // Mock patient
+        String patientName = "TestPatient";
+        final Patient patient = new Patient();
+        patient.setUsername(patientName);
+
+        // Mock prescription
+        List<Prescription> expectedPrescriptions = new ArrayList<>();
+        Prescription prescription1 = new Prescription();
+        expectedPrescriptions.add(prescription1);
+
+        // Mock office visits
+        List<OfficeVisit> expectedOfficeVisits = new ArrayList<>();
+        OfficeVisit officeVisit1 = new OfficeVisit();
+        officeVisit1.setPatient(patient);
+        officeVisit1.setDate(ZonedDateTime.now());
+        officeVisit1.setType(AppointmentType.GENERAL_CHECKUP);
+        officeVisit1.setNotes("Regular checkup");
+        officeVisit1.setPrescriptions(expectedPrescriptions);
+        expectedOfficeVisits.add(officeVisit1);
+
+        // Mock interactions
+        mockGetRecentOfficeVisits(patientName, expectedOfficeVisits);
+
+        // Test the method
+        List<Prescription> result = emergencyPatientService.getRecentPrescriptions(patientName);
+
+        // Verify the result
+        assertEquals(expectedPrescriptions, result);
     }
 }

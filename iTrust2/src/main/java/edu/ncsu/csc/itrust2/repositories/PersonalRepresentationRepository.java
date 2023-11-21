@@ -11,7 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface PersonalRepresentationRepository
         extends JpaRepository<PersonalRepresentation, Long> {
 
-    PersonalRepresentation findByPatientAndPersonalRepresentative(Patient patient, User representative);
-
-    void deletePersonalRepresentation(PersonalRepresentation representation);
+    PersonalRepresentation findByPatientAndPersonalRepresentative(Patient patient, Patient representative);
 }

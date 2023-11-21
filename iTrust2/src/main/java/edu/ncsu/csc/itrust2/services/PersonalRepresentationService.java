@@ -2,28 +2,29 @@ package edu.ncsu.csc.itrust2.services;
 
 import edu.ncsu.csc.itrust2.models.Patient;
 import edu.ncsu.csc.itrust2.models.PersonalRepresentation;
-import edu.ncsu.csc.itrust2.models.User;
 import edu.ncsu.csc.itrust2.repositories.PatientRepository;
 import edu.ncsu.csc.itrust2.repositories.PersonalRepresentationRepository;
-import edu.ncsu.csc.itrust2.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class PersonalRepresentationService {
 
     private final PersonalRepresentationRepository personalRepresentationRepository;
-    private final UserRepository userRepository;
+    private final PatientRepository patientRepository;
 
+    @Transactional
     public void cancelPersonalRepresentation(String patientName, String representativeName){
-        Patient patient = (Patient) userRepository.findByUsername(patientName);
-        User representative = userRepository.findByUsername(representativeName);
+        Patient patient = patientRepository.findByUsername(patientName);
+        Patient representative = patientRepository.findByUsername(representativeName);
 
         PersonalRepresentation personalRepresentation
                 = personalRepresentationRepository
                 .findByPatientAndPersonalRepresentative(patient, representative);
 
-        personalRepresentationRepository.deletePersonalRepresentation(personalRepresentation);
+        personalRepresentationRepository.delete(personalRepresentation);
     }
 }

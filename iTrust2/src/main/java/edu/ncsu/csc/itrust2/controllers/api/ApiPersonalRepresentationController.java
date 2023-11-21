@@ -28,19 +28,18 @@ public class ApiPersonalRepresentationController {
     private final PersonalRepresentationService personalRepresentationService;
 
     private LoggerUtil loggerUtil;
-    private UserService userService;
-    String currentUserName = loggerUtil.getCurrentUsername();
-    User currentUser = userService.findByName(currentUserName);
 
-    @DeleteMapping("/delete/{patientName}")
-    @PreAuthorize("hasAnyRole('ROLE_PATIENT')")
-    public void cancelPersonalRepresentation(String patientName, String representativeName) {
-        try {
-            if (patientName.equals(currentUserName) || representativeName.equals(currentUserName)){
-                personalRepresentationService.cancelPersonalRepresentation(patientName, representativeName);
-            } else {throw new Exception();}
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+    @DeleteMapping("/representatives/{representativeUsername}")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public void cancelRepresentative(@PathVariable String representativeUsername) {
+        String currentUsername = loggerUtil.getCurrentUsername();
+        personalRepresentationService.cancelPersonalRepresentation(currentUsername, representativeUsername);
+    }
+
+    @DeleteMapping("/representingPatients/{patientUsername}")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public void cancelRepresentingPatient(@PathVariable String patientUsername) {
+        String currentUsername = loggerUtil.getCurrentUsername();
+        personalRepresentationService.cancelPersonalRepresentation(patientUsername, currentUsername);
     }
 }

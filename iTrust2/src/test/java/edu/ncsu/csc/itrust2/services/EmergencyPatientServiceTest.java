@@ -45,7 +45,6 @@ public class EmergencyPatientServiceTest {
 
     @Test
     public void testGetPatientInformation() {
-        // Mock patient
         String patientName = "TestPatient";
         final Patient patient = new Patient();
         patient.setUsername(patientName);
@@ -56,21 +55,17 @@ public class EmergencyPatientServiceTest {
         patient.setBloodType(BloodType.parse("A+"));
         patient.setRoles(Set.of(Role.ROLE_PATIENT));
 
-        // Mock User
         String currentUserName = "TestUser";
         final Personnel currentUser = new Personnel();
         currentUser.setUsername(currentUserName);
         currentUser.setRoles(Set.of(Role.ROLE_HCP));
 
-        // Mock interactions
         given(patientService.findByName(eq(patientName))).willReturn(patient);
         given(patientService.findByName(eq(currentUserName))).willReturn(currentUser);
         given(loggerUtil.getCurrentUsername()).willReturn(currentUserName);
 
-        // Test the method
         EmergencyPatientInfo result = emergencyPatientService.getPatientInformation(patientName);
 
-        // Verify the result
         assertEquals(patient.getUsername(), result.username());
         assertEquals(patient.getFirstName(), result.firstName());
         assertEquals(patient.getPreferredName(), result.preferredName());
@@ -84,19 +79,17 @@ public class EmergencyPatientServiceTest {
         final var patient = new Patient();
         given(patientService.findByName(givenPatientName)).willReturn(patient);
         given(
-                        officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
-                                any(), any(), eq(patient)))
+                officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
+                        any(), any(), eq(patient)))
                 .willReturn(expected);
     }
 
     @Test
     public void testGetRecentOfficeVisits() {
-        // Mock patient
         String patientName = "TestPatient";
         final Patient patient = new Patient();
         patient.setUsername(patientName);
 
-        // Mock office visits
         List<OfficeVisit> expectedOfficeVisits = new ArrayList<>();
         OfficeVisit officeVisit1 = new OfficeVisit();
         officeVisit1.setPatient(patient);
@@ -105,28 +98,23 @@ public class EmergencyPatientServiceTest {
         officeVisit1.setNotes("Regular checkup");
         expectedOfficeVisits.add(officeVisit1);
 
-        // Mock interactions
         given(patientService.findByName(eq(patientName))).willReturn(patient);
         given(
-                        officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
-                                any(), any(), eq(patient)))
+                officeVisitRepository.findByDateBetweenAndPatientOrderByDateDesc(
+                        any(), any(), eq(patient)))
                 .willReturn(expectedOfficeVisits);
 
-        // Test the method
         List<OfficeVisit> result = emergencyPatientService.getRecentOfficeVisits(patientName, 7);
 
-        // Verify the result
         assertEquals(expectedOfficeVisits, result);
     }
 
     @Test
     public void testGetRecentDiagnoses() {
-        // Mock patient
         String patientName = "TestPatient";
         final Patient patient = new Patient();
         patient.setUsername(patientName);
 
-        // Mock office visits
         List<OfficeVisit> expectedOfficeVisits = new ArrayList<>();
         OfficeVisit officeVisit1 = new OfficeVisit();
         officeVisit1.setPatient(patient);
@@ -135,7 +123,6 @@ public class EmergencyPatientServiceTest {
         officeVisit1.setNotes("Regular checkup");
         expectedOfficeVisits.add(officeVisit1);
 
-        // Mock diagnosis
         List<Diagnosis> expectedDiagnosis = new ArrayList<>();
         Diagnosis diagnosis1 = new Diagnosis();
         diagnosis1.setVisit(officeVisit1);
@@ -145,30 +132,24 @@ public class EmergencyPatientServiceTest {
         diagnosis2.setVisit(officeVisit1);
         expectedDiagnosis.add(diagnosis2);
 
-        // Mock interactions
         mockGetRecentOfficeVisits(patientName, expectedOfficeVisits);
         given(diagnosisRepository.findByVisit(eq(officeVisit1))).willReturn(expectedDiagnosis);
 
-        // Test the method
         List<Diagnosis> result = emergencyPatientService.getRecentDiagnoses(patientName);
 
-        // Verify the result
         assertEquals(expectedDiagnosis, result);
     }
 
     @Test
     public void testGetRecentPrescriptions() {
-        // Mock patient
         String patientName = "TestPatient";
         final Patient patient = new Patient();
         patient.setUsername(patientName);
 
-        // Mock prescription
         List<Prescription> expectedPrescriptions = new ArrayList<>();
         Prescription prescription1 = new Prescription();
         expectedPrescriptions.add(prescription1);
 
-        // Mock office visits
         List<OfficeVisit> expectedOfficeVisits = new ArrayList<>();
         OfficeVisit officeVisit1 = new OfficeVisit();
         officeVisit1.setPatient(patient);
@@ -178,13 +159,10 @@ public class EmergencyPatientServiceTest {
         officeVisit1.setPrescriptions(expectedPrescriptions);
         expectedOfficeVisits.add(officeVisit1);
 
-        // Mock interactions
         mockGetRecentOfficeVisits(patientName, expectedOfficeVisits);
 
-        // Test the method
         List<Prescription> result = emergencyPatientService.getRecentPrescriptions(patientName);
 
-        // Verify the result
         assertEquals(expectedPrescriptions, result);
     }
 }

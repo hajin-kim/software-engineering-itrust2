@@ -32,7 +32,6 @@ public class PatientSearchServiceTest {
 
     @Test
     public void testListByPatientName() {
-        // Mock patient
         String patientName = "TestPatient";
         final Patient patient = new Patient();
         patient.setUsername(patientName);
@@ -43,27 +42,22 @@ public class PatientSearchServiceTest {
         patient.setBloodType(BloodType.parse("A+"));
         patient.setRoles(Set.of(Role.ROLE_PATIENT));
 
-        // Mock User
         String currentUserName = "TestUser";
         final Personnel currentUser = new Personnel();
         currentUser.setUsername(currentUserName);
         currentUser.setRoles(Set.of(Role.ROLE_HCP));
 
-        // Mock patient list
         List<Patient> expectedPatients = new ArrayList<>();
         expectedPatients.add(patient);
 
-        // Mock interactions
         given(
                         patientRepository
                                 .findAllByFirstNameContainsOrLastNameContainsOrUsernameContains(
                                         eq(patientName), eq(patientName), eq(patientName)))
                 .willReturn(expectedPatients);
 
-        // Test the method
         List<Patient> result = patientSearchService.listByPatientName(patientName);
 
-        // Verify the result
         assertEquals(expectedPatients, result);
     }
 }

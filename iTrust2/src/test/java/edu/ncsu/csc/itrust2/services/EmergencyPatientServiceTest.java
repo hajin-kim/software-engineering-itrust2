@@ -80,7 +80,7 @@ public class EmergencyPatientServiceTest {
         assertEquals(patient.getBloodType(), result.bloodType());
     }
 
-    void mockGetRecentOfficeVisits(String givenPatientName, List<OfficeVisit> expected) {
+    private void mockGetRecentOfficeVisits(String givenPatientName, List<OfficeVisit> expected) {
         final var patient = new Patient();
         given(patientService.findByName(givenPatientName)).willReturn(patient);
         given(

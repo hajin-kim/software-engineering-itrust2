@@ -56,7 +56,7 @@ public class ApiPersonalRepresentationController {
     }
 
     @Operation(summary = "Patient: 자신의 대리인 지정")
-    @PostMapping("/representatives/{representativeUsername}")
+    @PostMapping("/personalRepresentatives/{personalRepresentativeUsername}")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public void setPersonalRepresentative(
             @Parameter(description = "대리인으로 지정할 환자의 username 입니다.") @PathVariable

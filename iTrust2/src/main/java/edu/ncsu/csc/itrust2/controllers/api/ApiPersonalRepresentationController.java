@@ -88,7 +88,7 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.cancelPersonalRepresentation(currentUsername, personalRepresentativeUsername);
     }
 
-    @Operation(summary = "Patient: 자신이 대리하고 있는 환자의 지정 해제")
+    @Operation(summary = "Patient: 자신이 대리하고 있는 환자 지정 해제")
     @DeleteMapping("/representingPatients/{representingPatientUsername}")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public void cancelRepresentingPatient(

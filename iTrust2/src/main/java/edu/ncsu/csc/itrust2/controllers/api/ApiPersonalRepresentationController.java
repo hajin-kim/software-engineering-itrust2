@@ -55,6 +55,22 @@ public class ApiPersonalRepresentationController {
         return personalRepresentationService.listByPatient(patientUsername);
     }
 
+    @PostMapping("/representatives/{representativeUsername}")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public void setPersonalRepresentative(@PathVariable String representativeUsername) {
+        String currentUsername = loggerUtil.getCurrentUsername();
+        personalRepresentationService.setPersonalRepresentation(
+                currentUsername, representativeUsername);
+    }
+
+    @PostMapping("/patients/{patientUsername}/representatives/{representativeUsername}")
+    @PreAuthorize("hasRole('ROLE_HCP')")
+    public void setPersonalRepresentation(
+            @PathVariable String patientUsername, @PathVariable String representativeUsername) {
+        personalRepresentationService.setPersonalRepresentation(
+                patientUsername, representativeUsername);
+    }
+
     @DeleteMapping("/personalRepresentatives/{personalRepresentativeUsername}")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public void cancelPersonalRepresentative(@PathVariable String personalRepresentativeUsername) {

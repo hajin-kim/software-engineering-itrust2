@@ -1,16 +1,13 @@
 package edu.ncsu.csc.itrust2.controllers.api;
 
-import edu.ncsu.csc.itrust2.models.AppointmentRequest;
-import edu.ncsu.csc.itrust2.models.BasicHealthMetrics;
-import edu.ncsu.csc.itrust2.models.Diagnosis;
-import edu.ncsu.csc.itrust2.models.Patient;
-import edu.ncsu.csc.itrust2.models.PersonalRepresentation;
+import edu.ncsu.csc.itrust2.models.*;
 import edu.ncsu.csc.itrust2.models.security.LogEntry;
 import edu.ncsu.csc.itrust2.services.AppointmentRequestService;
 import edu.ncsu.csc.itrust2.services.BasicHealthMetricsService;
 import edu.ncsu.csc.itrust2.services.DiagnosisService;
 import edu.ncsu.csc.itrust2.services.PatientService;
 import edu.ncsu.csc.itrust2.services.PersonalRepresentationService;
+import edu.ncsu.csc.itrust2.services.EmergencyPatientService;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
 import java.util.List;
@@ -34,6 +31,7 @@ public class ApiPersonalRepresentationController {
     private final AppointmentRequestService appointmentRequestService;
     private final BasicHealthMetricsService basicHealthMetricsService;
     private final PatientService patientService;
+    private final EmergencyPatientService emergencyPatientService;
     private final LoggerUtil loggerUtil;
 
     @Operation(summary = "Patient: 자신의 대리인 목록 조회")
@@ -134,8 +132,8 @@ public class ApiPersonalRepresentationController {
         return loggerUtil.getAllForUser(representingPatientUsername);
     }
 
-    @Operation(summary = "Patient: 특정 환자의 기본 건강 medical records 목록 조회")
-    @GetMapping("/representingPatients/{representingPatientUsername}/medicalRecords")
+    @Operation(summary = "Patient: 특정 환자의 basic medical records 목록 조회")
+    @GetMapping("/representingPatients/{representingPatientUsername}/basic-medicalRecords")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public List<BasicHealthMetrics> listPatientMedicalRecords(
             @Parameter(description = "조회할 환자의 username") @PathVariable
@@ -152,14 +150,13 @@ public class ApiPersonalRepresentationController {
         return basicHealthMetricsService.findByPatient(patient);
     }
 
-    @Operation(summary = "Patient: 특정 환자의 diagnosis 목록 조회")
-    @GetMapping("/representingPatients/{representingPatientUsername}/diagnosis")
+    @Operation(summary = "Patient: 특정 환자의 prescription medical records 목록 조회")
+    @GetMapping("/representingPatients/{representingPatientUsername}/prescription-medicalRecords")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public List<Diagnosis> listPatientDiagnoses(
-            @Parameter(description = "조회할 환자의 username") @PathVariable
-                    String representingPatientUsername) {
+    public List<Prescription> getPrescriptionsIn90Days(
+            @Parameter(description = "조회활 환자의 username")  @PathVariable
+            String representingPatientUsername) {
 
-        Patient patient = (Patient) patientService.findByName(representingPatientUsername);
         String currentUsername = loggerUtil.getCurrentUsername();
 
         if (!personalRepresentationService.isRepresentative(
@@ -167,7 +164,25 @@ public class ApiPersonalRepresentationController {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");
         }
-        return diagnosisService.findByPatient(patient);
+        return emergencyPatientService.getRecentPrescriptions(representingPatientUsername);
+    }
+
+
+    @Operation(summary = "Patient: 특정 환자의 diagnoses 목록 조회")
+    @GetMapping("/representingPatients/{representingPatientUsername}/diagnoses")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    public List<Diagnosis> listPatientDiagnosesIn60Days(
+            @Parameter(description = "조회할 환자의 username") @PathVariable
+                    String representingPatientUsername) {
+
+        String currentUsername = loggerUtil.getCurrentUsername();
+
+        if (!personalRepresentationService.isRepresentative(
+                currentUsername, representingPatientUsername)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");
+        }
+        return emergencyPatientService.getRecentDiagnoses(representingPatientUsername);
     }
 
     @Operation(summary = "Patient: 특정 환자의 appointments 목록 조회")

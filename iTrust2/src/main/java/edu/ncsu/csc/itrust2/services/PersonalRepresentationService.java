@@ -54,7 +54,13 @@ public class PersonalRepresentationService {
 
     public boolean isRepresentative(String currentUsername, String patientName) {
         final Patient patient = (Patient) patientService.findByName(patientName);
-        List<PersonalRepresentation> representations = personalRepresentationRepository.findAllByPatient(patient);
-        return representations.stream().anyMatch(repr -> repr.getPersonalRepresentative().getUsername().equals(currentUsername));
+        List<PersonalRepresentation> representations =
+                personalRepresentationRepository.findAllByPatient(patient);
+        return representations.stream()
+                .anyMatch(
+                        repr ->
+                                repr.getPersonalRepresentative()
+                                        .getUsername()
+                                        .equals(currentUsername));
     }
 }

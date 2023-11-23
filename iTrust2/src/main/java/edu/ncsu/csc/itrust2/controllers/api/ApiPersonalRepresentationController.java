@@ -60,35 +60,44 @@ public class ApiPersonalRepresentationController {
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public void setPersonalRepresentative(
             @Parameter(description = "대리인으로 지정할 환자의 username 입니다.") @PathVariable
-                final String personalRepresentativeUsername) {
+                    final String personalRepresentativeUsername) {
         String currentUsername = loggerUtil.getCurrentUsername();
         personalRepresentationService.setPersonalRepresentation(
                 currentUsername, personalRepresentativeUsername);
     }
 
     @Operation(summary = "HCP: 특정 환자의 대리인 지정")
-    @PostMapping("/patients/{patientUsername}/personalRepresentatives/{personalRepresentativeUsername}")
+    @PostMapping(
+            "/patients/{patientUsername}/personalRepresentatives/{personalRepresentativeUsername}")
     @PreAuthorize("hasRole('ROLE_HCP')")
     public void setPersonalRepresentation(
             @Parameter(description = "대리인을 지정할 특정 환자의 username 입니다.") @PathVariable
-                final String patientUsername,
+                    final String patientUsername,
             @Parameter(description = "대리인으로 지정할 환자의 username 입니다.") @PathVariable
-                final String personalRepresentativeUsername) {
+                    final String personalRepresentativeUsername) {
         personalRepresentationService.setPersonalRepresentation(
                 patientUsername, personalRepresentativeUsername);
     }
 
+    @Operation(summary = "Patient: 자신의 대리인 지정 해제")
     @DeleteMapping("/personalRepresentatives/{personalRepresentativeUsername}")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public void cancelPersonalRepresentative(@PathVariable String personalRepresentativeUsername) {
+    public void cancelPersonalRepresentative(
+            @Parameter(description = "지정 해제할 대리인의 username") @PathVariable
+                    String personalRepresentativeUsername) {
         String currentUsername = loggerUtil.getCurrentUsername();
-        personalRepresentationService.cancelPersonalRepresentation(currentUsername, personalRepresentativeUsername);
+        personalRepresentationService.cancelPersonalRepresentation(
+                currentUsername, personalRepresentativeUsername);
     }
 
+    @Operation(summary = "Patient: 자신이 대리하고 있는 환자 지정 해제")
     @DeleteMapping("/representingPatients/{representingPatientUsername}")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public void cancelRepresentingPatient(@PathVariable String representingPatientUsername) {
+    public void cancelRepresentingPatient(
+            @Parameter(description = "지정 해제할 대리하고 있는 환자의 username") @PathVariable
+                    String representingPatientUsername) {
         String currentUsername = loggerUtil.getCurrentUsername();
-        personalRepresentationService.cancelPersonalRepresentation(representingPatientUsername, currentUsername);
+        personalRepresentationService.cancelPersonalRepresentation(
+                representingPatientUsername, currentUsername);
     }
 }

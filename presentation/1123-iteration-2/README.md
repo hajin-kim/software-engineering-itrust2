@@ -139,9 +139,9 @@ Iter3는 예상 방안입니다.
 
 ### 인프라
 
-### 향후 계획
+(별도 문서)
 
-## 기타
+## 그 외 현황
 
 ### 테스트
 
@@ -153,6 +153,10 @@ Iter3는 예상 방안입니다.
   - 혹시 이러한 방법론에 관해 디스커션하는데 관심이 있으시면 컨택 부탁드립니다.  
     <https://github.com/hajin-kim/tdd-study>  
     <https://github.com/hajin-kim/tdd-step-by-step>
+
+![unit-test-coverage](resources/unit-test-coverage.png)
+
+- 단위 테스트 instruction coverage 80%를 달성하였습니다.
 
 ### 정기적 커밋
 

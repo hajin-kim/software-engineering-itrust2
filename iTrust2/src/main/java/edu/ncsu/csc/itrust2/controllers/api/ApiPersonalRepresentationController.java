@@ -1,15 +1,15 @@
 package edu.ncsu.csc.itrust2.controllers.api;
 
 import edu.ncsu.csc.itrust2.models.AppointmentRequest;
+import edu.ncsu.csc.itrust2.models.BasicHealthMetrics;
 import edu.ncsu.csc.itrust2.models.Diagnosis;
 import edu.ncsu.csc.itrust2.models.Patient;
-import edu.ncsu.csc.itrust2.models.BasicHealthMetrics;
 import edu.ncsu.csc.itrust2.models.PersonalRepresentation;
 import edu.ncsu.csc.itrust2.models.security.LogEntry;
 import edu.ncsu.csc.itrust2.services.AppointmentRequestService;
+import edu.ncsu.csc.itrust2.services.BasicHealthMetricsService;
 import edu.ncsu.csc.itrust2.services.DiagnosisService;
 import edu.ncsu.csc.itrust2.services.PatientService;
-import edu.ncsu.csc.itrust2.services.BasicHealthMetricsService;
 import edu.ncsu.csc.itrust2.services.PersonalRepresentationService;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
@@ -117,7 +117,7 @@ public class ApiPersonalRepresentationController {
     }
 
     @Operation(summary = "Patient: 특정 환자의 logs 목록 조회")
-    @GetMapping("/representingPatients/{representingPatientUsername}")
+    @GetMapping("/representingPatients/{representingPatientUsername}/logs")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public List<LogEntry> listPatientLogs(
             @Parameter(description = "조회할 환자의 username") @PathVariable
@@ -126,7 +126,7 @@ public class ApiPersonalRepresentationController {
         Patient patient = (Patient) patientService.findByName(representingPatientUsername);
         String currentUsername = loggerUtil.getCurrentUsername();
 
-        if (personalRepresentationService.isRepresentative(
+        if (!personalRepresentationService.isRepresentative(
                 currentUsername, representingPatientUsername)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");
@@ -144,7 +144,7 @@ public class ApiPersonalRepresentationController {
         Patient patient = (Patient) patientService.findByName(representingPatientUsername);
         String currentUsername = loggerUtil.getCurrentUsername();
 
-        if (personalRepresentationService.isRepresentative(
+        if (!personalRepresentationService.isRepresentative(
                 currentUsername, representingPatientUsername)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");
@@ -162,7 +162,7 @@ public class ApiPersonalRepresentationController {
         Patient patient = (Patient) patientService.findByName(representingPatientUsername);
         String currentUsername = loggerUtil.getCurrentUsername();
 
-        if (personalRepresentationService.isRepresentative(
+        if (!personalRepresentationService.isRepresentative(
                 currentUsername, representingPatientUsername)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");
@@ -180,7 +180,7 @@ public class ApiPersonalRepresentationController {
         Patient patient = (Patient) patientService.findByName(representingPatientUsername);
         String currentUsername = loggerUtil.getCurrentUsername();
 
-        if (personalRepresentationService.isRepresentative(
+        if (!personalRepresentationService.isRepresentative(
                 currentUsername, representingPatientUsername)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");

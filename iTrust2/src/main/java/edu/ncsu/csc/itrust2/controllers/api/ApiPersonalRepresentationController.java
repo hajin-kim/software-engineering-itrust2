@@ -150,24 +150,6 @@ public class ApiPersonalRepresentationController {
         return basicHealthMetricsService.findByPatient(patient);
     }
 
-    @Operation(summary = "Patient: 특정 환자의 prescription medical records 목록 조회")
-    @GetMapping("/representingPatients/{representingPatientUsername}/prescription-medicalRecords")
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public List<Prescription> getPrescriptionsIn90Days(
-            @Parameter(description = "조회활 환자의 username")  @PathVariable
-            String representingPatientUsername) {
-
-        String currentUsername = loggerUtil.getCurrentUsername();
-
-        if (!personalRepresentationService.isRepresentative(
-                currentUsername, representingPatientUsername)) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");
-        }
-        return emergencyPatientService.getRecentPrescriptions(representingPatientUsername);
-    }
-
-
     @Operation(summary = "Patient: 특정 환자의 diagnoses 목록 조회")
     @GetMapping("/representingPatients/{representingPatientUsername}/diagnoses")
     @PreAuthorize("hasRole('ROLE_PATIENT')")

@@ -27,6 +27,23 @@ public class PersonalRepresentationServiceTest {
     @InjectMocks private PersonalRepresentationService personalRepresentationService;
 
     @Test
+    public void testSetPersonalRepresentation() {
+        final String patient = "patient";
+        final String representative = "representative";
+
+        final UserForm patientUserForm = new UserForm(patient, "123456", Role.ROLE_PATIENT, 1);
+        final UserForm representativeUserForm = new UserForm(representative, "123456", Role.ROLE_PATIENT, 1);
+        final Patient patientUser = new Patient(patientUserForm);
+        final Patient representativeUser= new Patient(representativeUserForm);
+
+        given(patientService.findByName(any(String.class))).willReturn(patientUser);
+        given(patientService.findByName(any(String.class))).willReturn(representativeUser);
+
+        personalRepresentationService.setPersonalRepresentation(patient, representative);
+
+    }
+
+    @Test
     public void testListByPatient() {
         final String patient1 = "patient1";
         final UserForm patient1Form = new UserForm(patient1, "123456", Role.ROLE_PATIENT, 1);

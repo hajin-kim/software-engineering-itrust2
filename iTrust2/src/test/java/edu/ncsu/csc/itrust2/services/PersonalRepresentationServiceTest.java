@@ -4,6 +4,7 @@ import edu.ncsu.csc.itrust2.forms.UserForm;
 import edu.ncsu.csc.itrust2.models.Patient;
 import edu.ncsu.csc.itrust2.models.PersonalRepresentation;
 import edu.ncsu.csc.itrust2.models.enums.Role;
+import edu.ncsu.csc.itrust2.repositories.PatientRepository;
 import edu.ncsu.csc.itrust2.repositories.PersonalRepresentationRepository;
 
 import java.util.ArrayList;
@@ -18,9 +19,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonalRepresentationServiceTest {
+    @Mock private PatientRepository patientRepository;
     @Mock private PersonalRepresentationRepository PersonalRepresentationRepository;
 
     @Mock private PatientService patientService;
@@ -41,6 +44,7 @@ public class PersonalRepresentationServiceTest {
 
         personalRepresentationService.setPersonalRepresentation(patient, representative);
 
+        verify(PersonalRepresentationRepository).save(any(PersonalRepresentation.class));
     }
 
     @Test

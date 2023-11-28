@@ -68,11 +68,10 @@ public class OphthalmologyAppointmentRequestTest {
         appointmentRequestUsingSetter.setCptCode("90000");
         appointmentRequestUsingSetter.setLongComment("test long comment");
 
-        final var appointmentRequestFormUsingSetter =
-                new AppointmentRequestForm(appointmentRequestUsingSetter);
+        final var appointmentRequestFormUsingSetter = new AppointmentRequestForm(appointmentRequestUsingSetter);
 
-        assertAppointmentRequestEquals(
-                appointmentRequestUsingSetter, appointmentRequestFormUsingSetter);
+        assertAppointmentRequestEquals(appointmentRequestUsingSetter, appointmentRequestFormUsingSetter);
+
     }
 
     public static void assertAppointmentRequestEquals(

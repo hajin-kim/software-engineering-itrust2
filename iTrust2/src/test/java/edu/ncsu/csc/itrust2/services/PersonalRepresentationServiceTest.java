@@ -9,7 +9,6 @@ import edu.ncsu.csc.itrust2.repositories.PersonalRepresentationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +20,6 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonalRepresentationServiceTest {
@@ -77,16 +75,19 @@ public class PersonalRepresentationServiceTest {
         final Patient patientUser = new Patient(patientUserForm);
         final Patient representativeUser = new Patient(representativeUserForm);
 
-        final PersonalRepresentation personalRepresentation = new PersonalRepresentation(patientUser, representativeUser);
+        final PersonalRepresentation personalRepresentation =
+                new PersonalRepresentation(patientUser, representativeUser);
 
-        given(patientRepository.findByUsername(any(String.class))).willReturn(patientUser);
-        given(patientRepository.findByUsername(any(String.class))).willReturn(representativeUser);
+        given(patientRepository.findByUsername(patient)).willReturn(patientUser);
+        given(patientRepository.findByUsername(representative)).willReturn(representativeUser);
 
-        given(PersonalRepresentationRepository.findByPatientAndPersonalRepresentative(
-                        any(Patient.class),any(Patient.class))).willReturn(personalRepresentation);
+        given(
+                        PersonalRepresentationRepository.findByPatientAndPersonalRepresentative(
+                                patientUser, representativeUser))
+                .willReturn(personalRepresentation);
 
         personalRepresentationService.cancelPersonalRepresentation(patient, representative);
 
-        verify(PersonalRepresentationRepository).delete(any(PersonalRepresentation.class));
+        verify(PersonalRepresentationRepository).delete(personalRepresentation);
     }
 }

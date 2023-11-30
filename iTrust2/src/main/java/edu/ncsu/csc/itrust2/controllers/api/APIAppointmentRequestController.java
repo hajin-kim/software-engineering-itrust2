@@ -11,7 +11,9 @@ import edu.ncsu.csc.itrust2.services.AppointmentRequestService;
 import edu.ncsu.csc.itrust2.services.UserService;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -79,6 +81,7 @@ public class APIAppointmentRequestController extends APIController {
                                     requests.stream()
                                             .filter(request -> request.getHcp().equals(hcp))
                                             .toList();
+                            Set<String> logged = new HashSet<>();
                             patientRequests.stream()
                                     .map(AppointmentRequest::getType)
                                     .distinct()
@@ -91,10 +94,13 @@ public class APIAppointmentRequestController extends APIController {
                                                             patient,
                                                             hcp);
                                                 } else {
-                                                    loggerUtil.log(
-                                                            TransactionType.OPH_VIEWS_APPT_REQ,
-                                                            patient,
-                                                            hcp);
+                                                    if (!logged.contains("oph")) {
+                                                        logged.add("oph");
+                                                        loggerUtil.log(
+                                                                TransactionType.OPH_VIEWS_APPT_REQ,
+                                                                patient,
+                                                                hcp);
+                                                    }
                                                 }
                                             });
                         });

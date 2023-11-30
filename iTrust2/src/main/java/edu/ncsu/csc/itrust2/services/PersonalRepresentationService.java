@@ -9,9 +9,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +20,7 @@ public class PersonalRepresentationService {
     private final PatientService patientService;
 
     @Transactional
-<<<<<<< iTrust2/src/main/java/edu/ncsu/csc/itrust2/services/PersonalRepresentationService.java
     public PersonalRepresentation setPersonalRepresentation(String patientName, String representativeName) {
-=======
-    public PersonalRepresentation setPersonalRepresentation(String patientName, String representativeName) {
-        if (patientName.equals(representativeName))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "환자와 대리인이 같을 수 없습니다.");
-
->>>>>>> iTrust2/src/main/java/edu/ncsu/csc/itrust2/services/PersonalRepresentationService.java
         Patient patient = patientRepository.findByUsername(patientName);
         Patient representative = patientRepository.findByUsername(representativeName);
 

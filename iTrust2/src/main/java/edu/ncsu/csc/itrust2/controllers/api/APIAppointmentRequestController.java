@@ -97,7 +97,7 @@ public class APIAppointmentRequestController extends APIController {
                                                     if (!logged.contains("oph")) {
                                                         logged.add("oph");
                                                         loggerUtil.log(
-                                                                TransactionType.OPH_VIEWS_APPT_REQ,
+                                                                TransactionType.PATIENT_VIEWS_APPT_REQ,
                                                                 patient,
                                                                 hcp);
                                                     }
@@ -193,18 +193,21 @@ public class APIAppointmentRequestController extends APIController {
                             TransactionType.APPOINTMENT_REQUEST_SUBMITTED,
                             request.getPatient(),
                             request.getHcp());
+                    break;
 
                 case GENERAL_OPHTHALMOLOGY:
                     loggerUtil.log(
                             TransactionType.PATIENT_REQ_OPH_APPT,
                             request.getPatient(),
                             request.getHcp());
+                    break;
 
                 case OPHTHALMOLOGY_SURGERY:
                     loggerUtil.log(
                             TransactionType.PATIENT_REQ_OPH_SURG,
                             request.getPatient(),
                             request.getHcp());
+                    break;
             }
             return new ResponseEntity(request, HttpStatus.OK);
         } catch (final Exception e) {
@@ -248,18 +251,21 @@ public class APIAppointmentRequestController extends APIController {
                             TransactionType.APPOINTMENT_REQUEST_DELETED,
                             request.getPatient(),
                             request.getHcp());
+                    break;
 
                 case GENERAL_OPHTHALMOLOGY:
                     loggerUtil.log(
                             TransactionType.PATIENT_DELETES_OPH_APPT_REQUEST,
                             request.getPatient(),
                             request.getHcp());
+                    break;
 
                 case OPHTHALMOLOGY_SURGERY:
                     loggerUtil.log(
                             TransactionType.PATIENT_DELETES_OPH_SURG,
                             request.getPatient(),
                             request.getHcp());
+                    break;
             }
             return new ResponseEntity(id, HttpStatus.OK);
         } catch (final Exception e) {
@@ -315,18 +321,15 @@ public class APIAppointmentRequestController extends APIController {
                             TransactionType.APPOINTMENT_REQUEST_UPDATED,
                             request.getPatient(),
                             request.getHcp());
+                    break;
 
                 case GENERAL_OPHTHALMOLOGY:
-                    loggerUtil.log(
-                            TransactionType.OPH_APPT_REQ_UPDATED,
-                            request.getPatient(),
-                            request.getHcp());
-
                 case OPHTHALMOLOGY_SURGERY:
                     loggerUtil.log(
                             TransactionType.OPH_APPT_REQ_UPDATED,
                             request.getPatient(),
                             request.getHcp());
+                    break;
             }
 
             if (request.getStatus().getCode() == Status.APPROVED.getCode()) {
@@ -336,18 +339,21 @@ public class APIAppointmentRequestController extends APIController {
                                 TransactionType.APPOINTMENT_REQUEST_APPROVED,
                                 request.getPatient(),
                                 request.getHcp());
+                        break;
 
                     case GENERAL_OPHTHALMOLOGY:
                         loggerUtil.log(
                                 TransactionType.OPH_APPT_REQ_APPROVED,
                                 request.getPatient(),
                                 request.getHcp());
+                        break;
 
                     case OPHTHALMOLOGY_SURGERY:
                         loggerUtil.log(
                                 TransactionType.OPH_SURG_REQ_APPROVED,
                                 request.getPatient(),
                                 request.getHcp());
+                        break;
                 }
             } else {
                 switch (request.getType()) {
@@ -356,18 +362,21 @@ public class APIAppointmentRequestController extends APIController {
                                 TransactionType.APPOINTMENT_REQUEST_DENIED,
                                 request.getPatient(),
                                 request.getHcp());
+                        break;
 
                     case GENERAL_OPHTHALMOLOGY:
                         loggerUtil.log(
                                 TransactionType.OPH_APPT_REQ_DENIED,
                                 request.getPatient(),
                                 request.getHcp());
+                        break;
 
                     case OPHTHALMOLOGY_SURGERY:
                         loggerUtil.log(
                                 TransactionType.OPH_SURG_REQ_DENIED,
                                 request.getPatient(),
                                 request.getHcp());
+                        break;
                 }
             }
 
@@ -407,8 +416,8 @@ public class APIAppointmentRequestController extends APIController {
                             e ->
                                     loggerUtil.log(
                                             TransactionType.OPH_VIEW_UPCOMING_APPOINTMENT,
-                                            loggerUtil.getCurrentUsername(),
-                                            e.getUsername()));
+                                            hcp,
+                                            e));
         } else {
             appointment.stream()
                     .map(AppointmentRequest::getPatient)
@@ -417,8 +426,8 @@ public class APIAppointmentRequestController extends APIController {
                             e ->
                                     loggerUtil.log(
                                             TransactionType.APPOINTMENT_REQUEST_VIEWED,
-                                            loggerUtil.getCurrentUsername(),
-                                            e.getUsername()));
+                                            hcp,
+                                            e));
         }
         return appointment;
     }

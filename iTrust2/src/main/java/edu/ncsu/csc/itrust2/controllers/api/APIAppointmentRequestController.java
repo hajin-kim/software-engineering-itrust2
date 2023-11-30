@@ -71,17 +71,14 @@ public class APIAppointmentRequestController extends APIController {
         final List<AppointmentRequest> requests = service.findByPatient(patient);
 
         requests.stream()
-                .map(AppointmentRequest::getPatient)
+                .map(AppointmentRequest::getHcp)
                 .distinct()
                 .forEach(
-                        patients -> {
+                        hcp -> {
                             List<AppointmentRequest> patientRequests =
                                     requests.stream()
-                                            .filter(
-                                                    request ->
-                                                            request.getPatient().equals(patients))
+                                            .filter(request -> request.getHcp().equals(hcp))
                                             .toList();
-                            String patientName = patients.getUsername();
                             patientRequests.stream()
                                     .map(AppointmentRequest::getType)
                                     .distinct()
@@ -91,13 +88,13 @@ public class APIAppointmentRequestController extends APIController {
                                                     loggerUtil.log(
                                                             TransactionType
                                                                     .APPOINTMENT_REQUEST_VIEWED,
-                                                            loggerUtil.getCurrentUsername(),
-                                                            patientName);
+                                                            patient,
+                                                            hcp);
                                                 } else {
                                                     loggerUtil.log(
                                                             TransactionType.OPH_VIEWS_APPT_REQ,
-                                                            loggerUtil.getCurrentUsername(),
-                                                            patientName);
+                                                            patient,
+                                                            hcp);
                                                 }
                                             });
                         });
@@ -184,16 +181,24 @@ public class APIAppointmentRequestController extends APIController {
                         HttpStatus.CONFLICT);
             }
             service.save(request);
-            if (request.getType().equals(AppointmentType.GENERAL_CHECKUP)) {
-                loggerUtil.log(
-                        TransactionType.APPOINTMENT_REQUEST_SUBMITTED,
-                        request.getPatient(),
-                        request.getHcp());
-            } else {
-                loggerUtil.log(
-                        TransactionType.PATIENT_REQ_OPH_APPT,
-                        request.getPatient(),
-                        request.getHcp());
+            switch (request.getType()) {
+                case GENERAL_CHECKUP:
+                    loggerUtil.log(
+                            TransactionType.APPOINTMENT_REQUEST_SUBMITTED,
+                            request.getPatient(),
+                            request.getHcp());
+
+                case GENERAL_OPHTHALMOLOGY:
+                    loggerUtil.log(
+                            TransactionType.PATIENT_REQ_OPH_APPT,
+                            request.getPatient(),
+                            request.getHcp());
+
+                case OPHTHALMOLOGY_SURGERY:
+                    loggerUtil.log(
+                            TransactionType.PATIENT_REQ_OPH_SURG,
+                            request.getPatient(),
+                            request.getHcp());
             }
             return new ResponseEntity(request, HttpStatus.OK);
         } catch (final Exception e) {
@@ -231,16 +236,24 @@ public class APIAppointmentRequestController extends APIController {
         }
         try {
             service.delete(request);
-            if (request.getType().equals(AppointmentType.GENERAL_CHECKUP)) {
-                loggerUtil.log(
-                        TransactionType.APPOINTMENT_REQUEST_DELETED,
-                        request.getPatient(),
-                        request.getHcp());
-            } else {
-                loggerUtil.log(
-                        TransactionType.PATIENT_DELETES_OPH_APPT_REQUEST,
-                        request.getPatient(),
-                        request.getHcp());
+            switch (request.getType()) {
+                case GENERAL_CHECKUP:
+                    loggerUtil.log(
+                            TransactionType.APPOINTMENT_REQUEST_DELETED,
+                            request.getPatient(),
+                            request.getHcp());
+
+                case GENERAL_OPHTHALMOLOGY:
+                    loggerUtil.log(
+                            TransactionType.PATIENT_DELETES_OPH_APPT_REQUEST,
+                            request.getPatient(),
+                            request.getHcp());
+
+                case OPHTHALMOLOGY_SURGERY:
+                    loggerUtil.log(
+                            TransactionType.PATIENT_DELETES_OPH_SURG,
+                            request.getPatient(),
+                            request.getHcp());
             }
             return new ResponseEntity(id, HttpStatus.OK);
         } catch (final Exception e) {
@@ -290,51 +303,65 @@ public class APIAppointmentRequestController extends APIController {
 
             service.save(request);
 
-            if (request.getType().equals(AppointmentType.GENERAL_CHECKUP)) {
-                loggerUtil.log(
-                        TransactionType.APPOINTMENT_REQUEST_UPDATED,
-                        request.getPatient(),
-                        request.getHcp());
-            } else {
-                loggerUtil.log(
-                        TransactionType.OPH_APPT_REQ_UPDATED,
-                        request.getPatient(),
-                        request.getHcp());
+            switch (request.getType()) {
+                case GENERAL_CHECKUP:
+                    loggerUtil.log(
+                            TransactionType.APPOINTMENT_REQUEST_UPDATED,
+                            request.getPatient(),
+                            request.getHcp());
+
+                case GENERAL_OPHTHALMOLOGY:
+                    loggerUtil.log(
+                            TransactionType.OPH_APPT_REQ_UPDATED,
+                            request.getPatient(),
+                            request.getHcp());
+
+                case OPHTHALMOLOGY_SURGERY:
+                    loggerUtil.log(
+                            TransactionType.OPH_APPT_REQ_UPDATED,
+                            request.getPatient(),
+                            request.getHcp());
             }
 
             if (request.getStatus().getCode() == Status.APPROVED.getCode()) {
-                if (request.getType().equals(AppointmentType.GENERAL_OPHTHALMOLOGY)) {
-                    loggerUtil.log(
-                            TransactionType.OPH_APPT_REQ_APPROVED,
-                            request.getPatient(),
-                            request.getHcp());
-                } else if (request.getType().equals(AppointmentType.OPHTHALMOLOGY_SURGERY)) {
-                    loggerUtil.log(
-                            TransactionType.OPH_SURG_REQ_APPROVED,
-                            request.getPatient(),
-                            request.getHcp());
-                } else {
-                    loggerUtil.log(
-                            TransactionType.APPOINTMENT_REQUEST_APPROVED,
-                            request.getPatient(),
-                            request.getHcp());
+                switch (request.getType()) {
+                    case GENERAL_CHECKUP:
+                        loggerUtil.log(
+                                TransactionType.APPOINTMENT_REQUEST_APPROVED,
+                                request.getPatient(),
+                                request.getHcp());
+
+                    case GENERAL_OPHTHALMOLOGY:
+                        loggerUtil.log(
+                                TransactionType.OPH_APPT_REQ_APPROVED,
+                                request.getPatient(),
+                                request.getHcp());
+
+                    case OPHTHALMOLOGY_SURGERY:
+                        loggerUtil.log(
+                                TransactionType.OPH_SURG_REQ_APPROVED,
+                                request.getPatient(),
+                                request.getHcp());
                 }
             } else {
-                if (request.getType().equals(AppointmentType.GENERAL_OPHTHALMOLOGY)) {
-                    loggerUtil.log(
-                            TransactionType.OPH_APPT_REQ_DENIED,
-                            request.getPatient(),
-                            request.getHcp());
-                } else if (request.getType().equals(AppointmentType.OPHTHALMOLOGY_SURGERY)) {
-                    loggerUtil.log(
-                            TransactionType.OPH_SURG_REQ_DENIED,
-                            request.getPatient(),
-                            request.getHcp());
-                } else {
-                    loggerUtil.log(
-                            TransactionType.APPOINTMENT_REQUEST_DENIED,
-                            request.getPatient(),
-                            request.getHcp());
+                switch (request.getType()) {
+                    case GENERAL_CHECKUP:
+                        loggerUtil.log(
+                                TransactionType.APPOINTMENT_REQUEST_DENIED,
+                                request.getPatient(),
+                                request.getHcp());
+
+                    case GENERAL_OPHTHALMOLOGY:
+                        loggerUtil.log(
+                                TransactionType.OPH_APPT_REQ_DENIED,
+                                request.getPatient(),
+                                request.getHcp());
+
+                    case OPHTHALMOLOGY_SURGERY:
+                        loggerUtil.log(
+                                TransactionType.OPH_SURG_REQ_DENIED,
+                                request.getPatient(),
+                                request.getHcp());
                 }
             }
 

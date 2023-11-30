@@ -39,12 +39,15 @@ public class PersonalRepresentationServiceTest {
         final Patient patientUser = new Patient(patientUserForm);
         final Patient representativeUser= new Patient(representativeUserForm);
 
-        given(patientService.findByName(any(String.class))).willReturn(patientUser);
-        given(patientService.findByName(any(String.class))).willReturn(representativeUser);
+        given(patientRepository.findByUsername(patient)).willReturn(patientUser);
+        given(patientRepository.findByUsername(representative)).willReturn(representativeUser);
+        given(PersonalRepresentationRepository.save(any(PersonalRepresentation.class))).willAnswer(invocation -> invocation.getArgument(0));
 
-        personalRepresentationService.setPersonalRepresentation(patient, representative);
+        final PersonalRepresentation result = personalRepresentationService.setPersonalRepresentation(patient, representative);
 
         verify(PersonalRepresentationRepository).save(any(PersonalRepresentation.class));
+        assertEquals(patientUser, result.getPatient());
+        assertEquals(representativeUser, result.getPersonalRepresentative());
     }
 
     @Test

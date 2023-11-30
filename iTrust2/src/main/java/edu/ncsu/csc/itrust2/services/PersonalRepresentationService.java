@@ -20,14 +20,14 @@ public class PersonalRepresentationService {
     private final PatientService patientService;
 
     @Transactional
-    public void setPersonalRepresentation(String patientName, String representativeName) {
+    public PersonalRepresentation setPersonalRepresentation(String patientName, String representativeName) {
         Patient patient = patientRepository.findByUsername(patientName);
         Patient representative = patientRepository.findByUsername(representativeName);
 
         PersonalRepresentation personalRepresentation =
                 new PersonalRepresentation(patient, representative);
 
-        personalRepresentationRepository.save(personalRepresentation);
+        return personalRepresentationRepository.save(personalRepresentation);
     }
 
     @Transactional

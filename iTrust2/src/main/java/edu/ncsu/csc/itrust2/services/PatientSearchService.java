@@ -44,6 +44,6 @@ public class PatientSearchService {
                                                         + patient.getLastName(),
                                                 nameQuery)
                                         || isSubstringOf(patient.getUsername(), nameQuery))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

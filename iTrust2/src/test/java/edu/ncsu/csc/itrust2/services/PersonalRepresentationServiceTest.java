@@ -24,18 +24,13 @@ import org.springframework.web.server.ResponseStatusException;
 import static junit.framework.TestCase.fail;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
-
 @RunWith(MockitoJUnitRunner.class)
 public class PersonalRepresentationServiceTest {
-    @Mock private PatientRepository patientRepository;
     @Mock private PersonalRepresentationRepository PersonalRepresentationRepository;
     @Mock private PatientService patientService;
     @Mock private AppointmentRequestService appointmentRequestService;

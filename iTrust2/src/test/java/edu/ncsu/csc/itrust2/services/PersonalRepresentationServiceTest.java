@@ -4,12 +4,9 @@ import edu.ncsu.csc.itrust2.controllers.api.ApiPersonalRepresentationController;
 import edu.ncsu.csc.itrust2.forms.UserForm;
 import edu.ncsu.csc.itrust2.models.*;
 import edu.ncsu.csc.itrust2.models.enums.Role;
-
 import edu.ncsu.csc.itrust2.models.enums.TransactionType;
 import edu.ncsu.csc.itrust2.models.security.LogEntry;
-
 import edu.ncsu.csc.itrust2.repositories.PatientRepository;
-
 import edu.ncsu.csc.itrust2.repositories.PersonalRepresentationRepository;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 

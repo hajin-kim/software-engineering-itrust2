@@ -15,7 +15,7 @@ public class PatientSearchService {
 
     private final PatientRepository patientRepository;
 
-    private boolean isSubstringOf(String string, String substring) {
+    private boolean isSubsequenceOf(String string, String substring) {
         string = string.toLowerCase();
         substring = substring.toLowerCase();
 
@@ -30,20 +30,20 @@ public class PatientSearchService {
                 stringIndexT++;
             }
         }
-
         return subStringIndex == substring.length();
     }
 
     public List<Patient> listByPatientName(String nameQuery) {
+        // TODO: @Query(nativeQuery = true) (이름은조금 다를수도 있습니다) 를 레포지토리 메서드에 달아 SQL을 사용하여 쿼리 수준에서 해결하기
         return patientRepository.findAll().stream()
                 .filter(
                         patient ->
-                                isSubstringOf(
+                                isSubsequenceOf(
                                                 patient.getFirstName()
                                                         + " "
                                                         + patient.getLastName(),
                                                 nameQuery)
-                                        || isSubstringOf(patient.getUsername(), nameQuery))
+                                        || isSubsequenceOf(patient.getUsername(), nameQuery))
                 .toList();
     }
 }

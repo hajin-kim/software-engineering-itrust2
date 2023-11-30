@@ -9,7 +9,9 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,14 @@ public class PersonalRepresentationService {
     private final PatientService patientService;
 
     @Transactional
+<<<<<<< iTrust2/src/main/java/edu/ncsu/csc/itrust2/services/PersonalRepresentationService.java
     public PersonalRepresentation setPersonalRepresentation(String patientName, String representativeName) {
+=======
+    public PersonalRepresentation setPersonalRepresentation(String patientName, String representativeName) {
+        if (patientName.equals(representativeName))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "환자와 대리인이 같을 수 없습니다.");
+
+>>>>>>> iTrust2/src/main/java/edu/ncsu/csc/itrust2/services/PersonalRepresentationService.java
         Patient patient = patientRepository.findByUsername(patientName);
         Patient representative = patientRepository.findByUsername(representativeName);
 
@@ -53,6 +62,7 @@ public class PersonalRepresentationService {
     }
 
     public boolean isRepresentative(String currentUsername, String patientName) {
+        // TODO 성능 이슈 우려됨. 쿼리 수준에서 처리 가능하니 바꿀 것
         final Patient patient = (Patient) patientService.findByName(patientName);
         List<PersonalRepresentation> representations =
                 personalRepresentationRepository.findAllByPatient(patient);

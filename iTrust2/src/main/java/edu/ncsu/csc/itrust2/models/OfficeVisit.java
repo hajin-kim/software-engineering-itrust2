@@ -125,6 +125,18 @@ public class OfficeVisit extends DomainObject {
         }
     }
 
+    public void validateOphthalmologySurgery(){
+        final OphthalmologySurgery ophthalmologySurgery = getOphthalmologySurgery();
+        if(ophthalmologySurgery.getLeftVisualAcuityResult() == null ||
+                ophthalmologySurgery.getRightVisualAcuityResult() == null ||
+                ophthalmologySurgery.getLeftSphere() == null ||
+                ophthalmologySurgery.getRightSphere() == null ||
+                (ophthalmologySurgery.getRightCylinder() != null && ophthalmologySurgery.getRightAxis() == null) ||
+                (ophthalmologySurgery.getLeftCylinder() != null && ophthalmologySurgery.getLeftAxis() == null) ||
+                ophthalmologySurgery.getSurgeryType() == null){
+            throw new IllegalArgumentException("Not all necessary fields for ophthalmology surgery metrics were submitted");
+        }
+    }
     /**
      * Validates an office visit form for containing correct fields for patients 12 and over.
      * Expects the basic health metrics to already be set by the OfficeVisit constructor.

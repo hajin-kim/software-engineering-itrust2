@@ -59,7 +59,7 @@ public class OfficeVisit extends DomainObject {
 
     @Setter
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ophthalmologySurgery_id")
+    @JoinColumn(name = "ophthalmology_surgery_id")
     private OphthalmologySurgery ophthalmologySurgery;
 
     /** The date of this office visit */

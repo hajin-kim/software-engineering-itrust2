@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ApiOphthalmologySurgeryController extends APIController {
 
     private final OfficeVisitService officeVisitService;

@@ -26,4 +26,5 @@ public class EmailService extends Service {
     public List<Email> findByReceiver(final User receiver) {
         return repository.findByReceiver(receiver);
     }
+    public List<Email> findBySender(final String sender) { return repository.findBySender(sender);}
 }

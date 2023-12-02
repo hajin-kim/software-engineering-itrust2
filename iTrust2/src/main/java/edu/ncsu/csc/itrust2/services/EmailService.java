@@ -26,5 +26,25 @@ public class EmailService extends Service {
     public List<Email> findByReceiver(final User receiver) {
         return repository.findByReceiver(receiver);
     }
-    public List<Email> findBySender(final String sender) { return repository.findBySender(sender);}
+
+    public static boolean isEmail(String email) {
+        boolean validation = false;
+
+        if (email.isEmpty()) {
+            return false;
+        }
+
+        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(email);
+        if (m.matches()) {
+            validation = true;
+        }
+
+        return validation;
+    }
+
+    public List<Email> findBySender(final String sender) {
+        return repository.findBySender(sender);
+    }
 }

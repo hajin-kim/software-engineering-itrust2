@@ -44,6 +44,27 @@ public class PersonalRepresentationServiceTest {
     @Mock private PatientRepository patientRepository;
 
     @Test
+    public void testSetPersonalRepresentation() {
+        final String patient = "patient";
+        final String representative = "representative";
+
+        final UserForm patientUserForm = new UserForm(patient, "123456", Role.ROLE_PATIENT, 1);
+        final UserForm representativeUserForm = new UserForm(representative, "123456", Role.ROLE_PATIENT, 1);
+        final Patient patientUser = new Patient(patientUserForm);
+        final Patient representativeUser= new Patient(representativeUserForm);
+
+        given(patientRepository.findByUsername(patient)).willReturn(patientUser);
+        given(patientRepository.findByUsername(representative)).willReturn(representativeUser);
+        given(PersonalRepresentationRepository.save(any(PersonalRepresentation.class))).willAnswer(invocation -> invocation.getArgument(0));
+
+        final PersonalRepresentation result = personalRepresentationService.setPersonalRepresentation(patient, representative);
+
+        verify(PersonalRepresentationRepository).save(any(PersonalRepresentation.class));
+        assertEquals(patientUser, result.getPatient());
+        assertEquals(representativeUser, result.getPersonalRepresentative());
+    }
+
+    @Test
     public void testListByPatient() {
         final String patient1 = "patient1";
         final UserForm patient1Form = new UserForm(patient1, "123456", Role.ROLE_PATIENT, 1);

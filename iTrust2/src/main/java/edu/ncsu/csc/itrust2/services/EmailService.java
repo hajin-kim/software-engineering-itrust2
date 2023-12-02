@@ -1,9 +1,9 @@
 package edu.ncsu.csc.itrust2.services;
 
-import edu.ncsu.csc.itrust2.forms.EmailForm;
 import edu.ncsu.csc.itrust2.models.Email;
 import edu.ncsu.csc.itrust2.models.User;
 import edu.ncsu.csc.itrust2.repositories.EmailRepository;
+import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,37 +22,36 @@ import org.springframework.stereotype.Component;
 @Transactional
 @RequiredArgsConstructor
 public class EmailService extends Service {
-
     private final EmailRepository repository;
     private final UserService userService;
+    final LoggerUtil loggerUtil;
 
     @Autowired private JavaMailSender emailSender;
 
-    public void sendEmail(@NotNull EmailForm emailForm) {
-        final String senderEmail = "hajinkids3106@gmail.com";
+    @Transactional
+    public void sendEmail(
+            @NotNull String senderName, String receiverName, String subject, String messageBody) {
+        final String fixedSystemEmail = "hajinkids3106@gmail.com";
 
-        User Receiver = userService.findByName(emailForm.getReceiver());
-        String ReceiverEmail = Receiver.getEmail();
+        User Sender = userService.findByName(senderName);
 
-        if (isEmail(ReceiverEmail)) {
+        User receiver = userService.findByName(receiverName);
+        String receiverEmail = receiver.getEmail();
+
+        if (isEmail(receiverEmail)) {
             SimpleMailMessage message = new SimpleMailMessage();
 
-            message.setFrom(senderEmail);
-            message.setTo(ReceiverEmail);
-            message.setSubject("[iTrust2]" + emailForm.getSubject());
-            message.setText(
-                    emailForm.getSender() + "로부터 전송된 메세지입니다.\n" + emailForm.getMessageBody());
+            message.setFrom(fixedSystemEmail);
+            message.setTo(receiverEmail);
+            message.setSubject("[iTrust2]" + subject);
+            message.setText(senderName + "로부터 전송된 메세지입니다.\n" + messageBody);
 
             emailSender.send(message);
         }
-        Email email =
-                new Email(
-                        emailForm.getSender(),
-                        Receiver,
-                        emailForm.getSubject(),
-                        emailForm.getMessageBody());
+        Email email = new Email(senderName, receiver, subject, messageBody);
 
         repository.save(email);
+        //getRepository().save(email);
     }
 
     @Override

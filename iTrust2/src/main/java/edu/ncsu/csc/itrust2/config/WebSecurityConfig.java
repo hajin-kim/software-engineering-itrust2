@@ -108,8 +108,7 @@ public class WebSecurityConfig {
                                 "/resetPassword",
                                 "/api/v1/generateUsers",
                                 "/viewEmails",
-                                "/api/v1/emails",
-                                "/api/v1/emails/send");
+                                "/api/v1/emails");
     }
 
     /**

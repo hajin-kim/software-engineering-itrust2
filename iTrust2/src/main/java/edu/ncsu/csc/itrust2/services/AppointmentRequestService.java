@@ -43,11 +43,6 @@ public class AppointmentRequestService extends Service {
         return appointmentRequestRepository.findByHcpAndPatientAndDate(hcp, patient, date);
     }
 
-    public List<AppointmentRequest> findByHcpAndPatient(final User hcp, final User patient) {
-        return appointmentRequestRepository.findByHcpAndPatientAndDateAfter(
-                hcp, patient, ZonedDateTime.now());
-    }
-
     public AppointmentRequest build(final AppointmentRequestForm raf) {
         final AppointmentRequest ar = new AppointmentRequest();
 

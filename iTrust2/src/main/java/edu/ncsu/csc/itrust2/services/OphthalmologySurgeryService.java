@@ -1,19 +1,14 @@
 package edu.ncsu.csc.itrust2.services;
 
 import edu.ncsu.csc.itrust2.forms.OphthalmologySurgeryForm;
-import edu.ncsu.csc.itrust2.models.FoodDiary;
-import edu.ncsu.csc.itrust2.models.OfficeVisit;
 import edu.ncsu.csc.itrust2.models.OphthalmologySurgery;
-import edu.ncsu.csc.itrust2.models.Patient;
-import edu.ncsu.csc.itrust2.models.Personnel;
 import edu.ncsu.csc.itrust2.models.User;
-import edu.ncsu.csc.itrust2.models.enums.TransactionType;
 import edu.ncsu.csc.itrust2.repositories.OphthalmologySurgeryRepository;
+
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -23,8 +18,8 @@ public class OphthalmologySurgeryService {
     private final UserService userService;
     private final OphthalmologySurgeryRepository ophthalmologySurgeryRepository;
 
-    public List<OphthalmologySurgery> findByOPH(final User OPH) {
-        return ophthalmologySurgeryRepository.findByOPH(OPH);
+    public List<OphthalmologySurgery> findByOPH(final User oph) {
+        return ophthalmologySurgeryRepository.findByHcp(oph);
     }
 
     public List<OphthalmologySurgery> findByPatient(final User patient) {

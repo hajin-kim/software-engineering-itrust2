@@ -9,6 +9,7 @@ import edu.ncsu.csc.itrust2.repositories.AppointmentRequestRepository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,8 +38,9 @@ public class AppointmentRequestService extends Service {
         return appointmentRequestRepository.findByHcp(hcp);
     }
 
-    public List<AppointmentRequest> findByHcpAndPatient(final User hcp, final User patient) {
-        return appointmentRequestRepository.findByHcpAndPatient(hcp, patient);
+    public Optional<AppointmentRequest> findByHcpAndPatientAndDate(
+            final User hcp, final User patient, final ZonedDateTime date) {
+        return appointmentRequestRepository.findByHcpAndPatientAndDate(hcp, patient, date);
     }
 
     public AppointmentRequest build(final AppointmentRequestForm raf) {

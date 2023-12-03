@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.Test;
@@ -21,6 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
@@ -133,16 +135,16 @@ public class OphthalmologyAppointmentRequestServiceTest {
                         "90000",
                         "test long comment");
 
-        List<AppointmentRequest> expectedFindByPatient = new ArrayList<>();
-        expectedFindByPatient.add(expectedOphAppointment);
+        given(
+                        appointmentRequestRepository.findByHcpAndPatientAndDate(
+                                eq(ophUser), eq(patient), eq(date)))
+                .willReturn(Optional.of(expectedOphAppointment));
 
-        given(appointmentRequestRepository.findByHcpAndPatient(eq(ophUser), eq(patient)))
-                .willReturn(expectedFindByPatient);
+        final Optional<AppointmentRequest> result =
+                appointmentRequestService.findByHcpAndPatientAndDate(ophUser, patient, date);
 
-        final List<AppointmentRequest> result =
-                appointmentRequestService.findByHcpAndPatient(ophUser, patient);
-
-        assertEquals(expectedFindByPatient, result);
+        assertTrue(result.isPresent());
+        assertEquals(expectedOphAppointment, result.get());
     }
 
     @Test

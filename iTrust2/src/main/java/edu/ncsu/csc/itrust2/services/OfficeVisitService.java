@@ -61,6 +61,7 @@ public class OfficeVisitService extends Service {
         return officeVisitRepository.findByHcpAndPatient(hcp, patient);
     }
 
+    @Transactional
     public OfficeVisit createOphthalmologySurgery(
             final OphthalmologySurgeryForm ophthalmologySurgeryForm) {
 

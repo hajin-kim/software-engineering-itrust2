@@ -17,11 +17,11 @@ public interface AppointmentRequestRepository extends JpaRepository<AppointmentR
 
     List<AppointmentRequest> findByHcpAndPatient(@NotNull User hcp, @NotNull User patient);
 
-    List<AppointmentRequest> findByPatientAndDataAfter(
+    List<AppointmentRequest> findByPatientAndDateAfter(
             @NotNull User patient, @NotNull ZonedDateTime now);
 
-    List<AppointmentRequest> findByHcpAndDataAfter(@NotNull User hcp, @NotNull ZonedDateTime now);
+    List<AppointmentRequest> findByHcpAndDateAfter(@NotNull User hcp, @NotNull ZonedDateTime now);
 
-    List<AppointmentRequest> findByHcpAndPatientAndDataAfter(
+    List<AppointmentRequest> findByHcpAndPatientAndDateAfter(
             @NotNull User hcp, @NotNull User patient, @NotNull ZonedDateTime now);
 }

@@ -51,7 +51,6 @@ public class EmailService extends Service {
         Email email = new Email(senderName, receiver, subject, messageBody);
 
         repository.save(email);
-        //getRepository().save(email);
     }
 
     @Override

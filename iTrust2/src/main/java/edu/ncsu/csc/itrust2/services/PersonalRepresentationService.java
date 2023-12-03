@@ -22,7 +22,8 @@ public class PersonalRepresentationService {
     private final PatientService patientService;
 
     @Transactional
-    public PersonalRepresentation setPersonalRepresentation(String patientName, String representativeName) {
+    public PersonalRepresentation setPersonalRepresentation(
+            String patientName, String representativeName) {
         if (patientName.equals(representativeName))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "환자와 대리인이 같을 수 없습니다.");
 

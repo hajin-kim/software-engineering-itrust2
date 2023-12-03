@@ -58,7 +58,7 @@ public class OphthalmologySurgery extends DomainObject {
                     HttpStatus.BAD_REQUEST,
                     "Visual acuity result cannot be null");
         }
-        if (leftVisualAcuityResult < 20 || leftVisualAcuityResult > 200) {
+        if (visualAcuityResult < 20 || visualAcuityResult > 200) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Visual acuity result must be the value between 20 and 200.");

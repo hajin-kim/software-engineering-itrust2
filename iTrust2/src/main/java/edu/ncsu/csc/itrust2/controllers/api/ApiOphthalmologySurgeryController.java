@@ -21,6 +21,6 @@ public class ApiOphthalmologySurgeryController extends APIController {
     @PreAuthorize("hasRole('ROLE_OPH')")
     public OfficeVisit createOphthalmologySurgery(
             @RequestBody final OphthalmologySurgeryForm ophthalmologySurgeryForm) {
-        return officeVisitService.addOphthalmologySurgery(ophthalmologySurgeryForm);
+        return officeVisitService.createOphthalmologySurgery(ophthalmologySurgeryForm);
     }
 }

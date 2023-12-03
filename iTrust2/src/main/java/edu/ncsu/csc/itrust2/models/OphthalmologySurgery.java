@@ -80,11 +80,9 @@ public class OphthalmologySurgery extends DomainObject {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,"Sphere cannot be null");
         }
-        BigDecimal sphereBigDecimal = new BigDecimal(sphere.toString());
-        if(!(sphereBigDecimal.scale() <= 2 && (sphereBigDecimal.abs().compareTo(BigDecimal.TEN) < 0))){
+        if (Math.abs(sphere) >= 100.0) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Sphere must be the floating point number up to two digits.");
+                    HttpStatus.BAD_REQUEST, "Sphere must be up to two digits.");
         }
     }
 
@@ -99,17 +97,16 @@ public class OphthalmologySurgery extends DomainObject {
     }
 
     public void checkCylinderValid(final Float cylinder, final Integer axis) {
-        if(leftCylinder != null) {
+        if (cylinder != null) {
             if (axis == null) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST, "Axis cannot be null if Cylinder is not null."
                 );
             }
-            BigDecimal cylinderBigDecimal = new BigDecimal(cylinder.toString());
-            if (!(cylinderBigDecimal.scale() <= 2 && (cylinderBigDecimal.abs().compareTo(BigDecimal.TEN) < 0))) {
+            if (Math.abs(cylinder) >= 100.0) {
                 throw new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        "Sphere must be the floating point number up to two digits.");
+                        "Cylinder must be up to two digits.");
             }
         }
     }

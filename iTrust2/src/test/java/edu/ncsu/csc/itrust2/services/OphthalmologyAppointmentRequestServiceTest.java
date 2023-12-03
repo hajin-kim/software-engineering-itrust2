@@ -149,7 +149,8 @@ public class OphthalmologyAppointmentRequestServiceTest {
 
     @Test
     public void testBuild() {
-        final var date = ZonedDateTime.of(2023, 11, 30, 11, 30, 0, 0, ZoneId.of("UTC"));
+        final var currentYear = ZonedDateTime.now().getYear();
+        final var date = ZonedDateTime.of(currentYear + 1, 11, 30, 11, 30, 0, 0, ZoneId.of("UTC"));
 
         String patientName = "TestPatient";
         final Patient patient = new Patient();
@@ -187,7 +188,8 @@ public class OphthalmologyAppointmentRequestServiceTest {
 
     @Test
     public void testBuildNullStatusAndType() {
-        final var date = ZonedDateTime.of(2023, 11, 30, 11, 30, 0, 0, ZoneId.of("UTC"));
+        final var currentYear = ZonedDateTime.now().getYear();
+        final var date = ZonedDateTime.of(currentYear + 1, 11, 30, 11, 30, 0, 0, ZoneId.of("UTC"));
 
         String patientName = "TestPatient";
         final Patient patient = new Patient();
@@ -226,7 +228,8 @@ public class OphthalmologyAppointmentRequestServiceTest {
 
     @Test
     public void testBuildThrowsExceptionWhenDateIsBeforeNow() {
-        final var date = ZonedDateTime.of(2023, 1, 30, 11, 30, 0, 0, ZoneId.of("UTC"));
+        final var currentYear = ZonedDateTime.now().getYear();
+        final var date = ZonedDateTime.of(currentYear - 1, 1, 30, 11, 30, 0, 0, ZoneId.of("UTC"));
 
         String patientName = "TestPatient";
         final Patient patient = new Patient();

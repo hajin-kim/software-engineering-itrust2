@@ -3,7 +3,6 @@ package edu.ncsu.csc.itrust2.controllers.api;
 import edu.ncsu.csc.itrust2.forms.OphthalmologySurgeryForm;
 import edu.ncsu.csc.itrust2.models.OfficeVisit;
 import edu.ncsu.csc.itrust2.models.OphthalmologySurgery;
-import edu.ncsu.csc.itrust2.models.User;
 import edu.ncsu.csc.itrust2.services.OfficeVisitMutationService;
 import edu.ncsu.csc.itrust2.services.OfficeVisitService;
 import edu.ncsu.csc.itrust2.services.OphthalmologySurgeryService;
@@ -47,14 +46,14 @@ public class ApiOphthalmologySurgeryController extends APIController {
     @GetMapping("/officevisits/ophthalmologySurgery/oph")
     @PreAuthorize("hasRole('ROLE_OPH')")
     public List<OphthalmologySurgery> listOphthalmologySurgeriesByCurrentOPH() {
-        final User self = userService.findByName(loggerUtil.getCurrentUsername());
-        return ophthalmologySurgeryService.findByOPH(self);
+        final String OPHName = loggerUtil.getCurrentUsername();
+        return ophthalmologySurgeryService.findByOPH(OPHName);
     }
 
     @GetMapping("/officevisits/ophthalmologySurgery/patient")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
     public List<OphthalmologySurgery> listOphthalmologySurgeriesByCurrentPatient() {
-        final User self = userService.findByName(loggerUtil.getCurrentUsername());
-        return ophthalmologySurgeryService.findByPatient(self);
+        final String patientName = loggerUtil.getCurrentUsername();
+        return ophthalmologySurgeryService.findByPatient(patientName);
     }
 }

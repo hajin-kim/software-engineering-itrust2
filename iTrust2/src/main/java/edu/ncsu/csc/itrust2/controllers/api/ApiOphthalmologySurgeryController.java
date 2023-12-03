@@ -2,7 +2,7 @@ package edu.ncsu.csc.itrust2.controllers.api;
 
 import edu.ncsu.csc.itrust2.forms.OphthalmologySurgeryForm;
 import edu.ncsu.csc.itrust2.models.OfficeVisit;
-import edu.ncsu.csc.itrust2.services.OfficeVisitService;
+import edu.ncsu.csc.itrust2.services.OfficeVisitMutationService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "[UC22] 안과 수술 API")
 public class ApiOphthalmologySurgeryController extends APIController {
 
-    private final OfficeVisitService officeVisitService;
+    private final OfficeVisitMutationService officeVisitMutationService;
 
     @Operation(summary = "Ophthalmologist: 안과 수술 문서 생성")
     @PostMapping("/officevisits/ophthalmologySurgery")
     @PreAuthorize("hasRole('ROLE_OPH')")
     public OfficeVisit createOphthalmologySurgery(
             @Parameter(description = "DB에 저장할 정보들입니다.") @RequestBody final OphthalmologySurgeryForm ophthalmologySurgeryForm) {
-        return officeVisitService.createOphthalmologySurgery(ophthalmologySurgeryForm);
+
+        return officeVisitMutationService.createForOphthalmologySurgery(ophthalmologySurgeryForm);
     }
 }

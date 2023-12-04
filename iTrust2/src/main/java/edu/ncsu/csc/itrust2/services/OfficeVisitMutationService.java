@@ -115,18 +115,8 @@ public class OfficeVisitMutationService {
         }
 
         final OfficeVisit ov = ovOptional.get();
-        ov.setPatient(userService.findByName(osf.getPatient()));
-        ov.setHcp(userService.findByName(osf.getHcp()));
-        ov.setNotes(osf.getNotes());
-        ov.setDate(ZonedDateTime.parse(osf.getDate()));
-        ov.setAppointment(getAppointmentRequest(ov, osf.getPreScheduled()));
-        ov.setHospital(hospitalService.findByName(osf.getHospital()));
-        ov.setBasicHealthMetrics(getBasicHealthMetrics(osf));
-        ov.setDiagnoses(getDiagnoses(osf.getDiagnoses()));
-        ov.setPrescriptions(getPrescriptions(osf.getPrescriptions()));
-
-        ov.setType(AppointmentType.OPHTHALMOLOGY_SURGERY);
-        ov.setOphthalmologySurgery(updateOphthalmologySurgery(ov.getOphthalmologySurgery().getId(), osf));
+        ov.setOphthalmologySurgery(
+                ophthalmologySurgeryService.update(ov.getOphthalmologySurgery().getId(), osf));
 
         return officeVisitRepository.save(ov);
     }
@@ -206,9 +196,5 @@ public class OfficeVisitMutationService {
 
     public OphthalmologySurgery getOphthalmologySurgery(final OphthalmologySurgeryForm ovf) {
         return ophthalmologySurgeryService.create(ovf);
-    }
-
-    public OphthalmologySurgery updateOphthalmologySurgery(final Long id, final OphthalmologySurgeryForm ovf) {
-        return ophthalmologySurgeryService.update(id, ovf);
     }
 }

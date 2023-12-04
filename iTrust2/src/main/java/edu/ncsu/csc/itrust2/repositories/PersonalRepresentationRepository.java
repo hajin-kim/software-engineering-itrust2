@@ -19,6 +19,6 @@ public interface PersonalRepresentationRepository
     PersonalRepresentation findByPatientAndPersonalRepresentative(
             Patient patient, Patient representative);
 
-    boolean existByPatientAndPersonalRepresentative(
+    boolean existsByPatientAndPersonalRepresentative(
             @NotNull Patient patient, @NotNull Patient personalRepresentative);
 }

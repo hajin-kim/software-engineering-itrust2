@@ -42,7 +42,7 @@ public class ApiOphthalmologySurgeryController extends APIController {
     }
 
     @Operation(summary = "Ophthalmologist: 안과 수술 문서 수정")
-    @PutMapping("/officevisits/ophthalmologySurgery/{id}")
+    @PatchMapping("/officevisits/ophthalmologySurgery/{id}")
     @PreAuthorize("hasRole('ROLE_OPH')")
     public OfficeVisit updateOphthalmologySurgery(
             @Parameter(description = "수정할 Office Visit의 ID입니다.") @PathVariable final Long id,

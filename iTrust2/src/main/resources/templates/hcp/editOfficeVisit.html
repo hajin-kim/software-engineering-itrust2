@@ -191,7 +191,7 @@
                   $scope.errorMsg = "";
                   $scope.selectedVisit.status = "PENDING";
 
-                  console.log($scope.selectedVisit.ophthalmologySurgery);
+                  console.log($scope.selectedVisit);
 
                   if ($scope.selectedVisit.type == null) {
                     $scope.errorMsg += "Please select a visit type\n";
@@ -222,7 +222,7 @@
                   $http({
                     method: 'PATCH',
                     url: '/iTrust2/api/v1/officevisits/ophthalmologySurgery/' + $scope.selectedVisitID,
-                    data: $scope.selectedVisit.ophthalmologySurgery
+                    data: $scope.selectedVisit
                   }).then(function (response) {
                     $scope.errorMsg = "";
                     $scope.message = "Office visit edited successfully";

@@ -1,6 +1,7 @@
 package edu.ncsu.csc.itrust2.services;
 
 import edu.ncsu.csc.itrust2.forms.OphthalmologySurgeryForm;
+import edu.ncsu.csc.itrust2.forms.UpdateOphthalmologySurgeryForm;
 import edu.ncsu.csc.itrust2.models.OphthalmologySurgery;
 import edu.ncsu.csc.itrust2.models.Patient;
 import edu.ncsu.csc.itrust2.models.User;
@@ -56,7 +57,7 @@ public class OphthalmologySurgeryService {
         return ophthalmologySurgeryRepository.save(ophthalmologySurgery);
     }
 
-    public OphthalmologySurgery update(final Long id, final OphthalmologySurgeryForm ophthalmologySurgeryForm) {
+    public OphthalmologySurgery update(final Long id, final UpdateOphthalmologySurgeryForm ophthalmologySurgeryForm) {
         Optional<OphthalmologySurgery> osOptional = ophthalmologySurgeryRepository.findById(id);
         if (osOptional.isEmpty()) {
             throw new ResponseStatusException(

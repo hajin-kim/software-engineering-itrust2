@@ -1,9 +1,6 @@
 package edu.ncsu.csc.itrust2.services;
 
-import edu.ncsu.csc.itrust2.forms.DiagnosisForm;
-import edu.ncsu.csc.itrust2.forms.OfficeVisitForm;
-import edu.ncsu.csc.itrust2.forms.OphthalmologySurgeryForm;
-import edu.ncsu.csc.itrust2.forms.PrescriptionForm;
+import edu.ncsu.csc.itrust2.forms.*;
 import edu.ncsu.csc.itrust2.models.AppointmentRequest;
 import edu.ncsu.csc.itrust2.models.BasicHealthMetrics;
 import edu.ncsu.csc.itrust2.models.Diagnosis;
@@ -106,7 +103,7 @@ public class OfficeVisitMutationService {
         return officeVisitRepository.save(ov);
     }
 
-    public OfficeVisit updateForOphthalmologySurgery(Long id, OphthalmologySurgeryForm osf) {
+    public OfficeVisit updateForOphthalmologySurgery(Long id, UpdateOphthalmologySurgeryForm uosf) {
 
         Optional<OfficeVisit> ovOptional = officeVisitRepository.findById(id);
         if (ovOptional.isEmpty()) {
@@ -116,7 +113,7 @@ public class OfficeVisitMutationService {
 
         final OfficeVisit ov = ovOptional.get();
         ov.setOphthalmologySurgery(
-                ophthalmologySurgeryService.update(ov.getOphthalmologySurgery().getId(), osf));
+                ophthalmologySurgeryService.update(ov.getOphthalmologySurgery().getId(), uosf));
 
         return officeVisitRepository.save(ov);
     }

@@ -104,7 +104,29 @@
 
                 $scope.selectedVisitID = null;
                 $scope.selectedVisit = {};
+                $scope.datePart = null;
+                $scope.timePart = null;
+                $scope.newdatePart = null;
+                $scope.newtimePart = null;
 
+                $scope.combineDateAndTime = function(datePart, timePart) {
+                  // Extract date components
+                  var year = datePart.getFullYear();
+                  var month = (datePart.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+                  var day = datePart.getDate().toString().padStart(2, '0');
+
+                  // Extract time components
+                  var hours = timePart.getHours().toString().padStart(2, '0');
+                  var minutes = timePart.getMinutes().toString().padStart(2, '0');
+                  var seconds = timePart.getSeconds().toString().padStart(2, '0');
+                  var timezoneOffset = -timePart.getTimezoneOffset(); // Get timezone offset in minutes
+
+                  // Combine date and time components
+                  var combinedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${timezoneOffset >= 0 ? '+' : '-'}${Math.abs(timezoneOffset / 60).toString().padStart(2, '0')}:00`;
+
+                  // Return the combined date-time object
+                  $scope.selectedVisit.date = combinedDateTime;
+                };
 
                 $scope.chooseVisit = function(id) {
                   // Find the visit with the specified ID
@@ -116,6 +138,23 @@
                   if (selectedVisit) {
                     $scope.selectedVisit = selectedVisit;
                     console.log("Selected visit:", $scope.selectedVisit);
+
+//                     // Assuming selectedVisit.date has the value "2023-12-15T15:48:00+09:00"
+                    var dateTimeString = selectedVisit.date;
+
+// Parse the date-time string
+                    var dateTime = new Date(dateTimeString);
+
+// Extract date and time parts
+                    $scope.datePart = dateTime.toISOString().split('T')[0]; // "2023-12-15"
+                    $scope.timePart = dateTime.toTimeString().split(' ')[0]; // "15:48:00"
+
+// Assign the separated parts back to your model
+                    $scope.selectedVisit.date = datePart;
+                    $scope.selectedVisit.time = timePart;
+                    console.log("Selected visit date:", $scope.selectedVisit.date);
+                    console.log("Selected visit time:", $scope.selectedVisit.time);
+
                   } else {
                     console.log("Visit with ID", id, "not found.");
                   }
@@ -192,6 +231,8 @@
                   $scope.selectedVisit.status = "PENDING";
 
                   console.log($scope.selectedVisit);
+                  console.log($scope.selectedVisit.date);
+                  console.log($scope.selectedVisit.time);
 
                   if ($scope.selectedVisit.type == null) {
                     $scope.errorMsg += "Please select a visit type\n";
@@ -291,12 +332,16 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="form-group col-md-2">
-                      <label>Date:</label>
-                      <input class="form-control" type="date" id="date" name="date" ng-model="selectedVisit.date" required="true" />
+                      <label>Original Date:</label>
+                      <p>{{datePart}}</p>
+                      <label>Change Date:</label>
+                      <input class="form-control" type="date" id="date" name="date" ng-model="newdatePart" ng-change="combineDateAndTime(newdatePart, newtimePart)" required="true" />
                     </div>
                     <div class="form-group col-md-2">
-                      <label>Time:</label>
-                      <input class="form-control" type="time" id="time" name="time" ng-model="selectedVisit.time" required="true" />
+                      <label>Original Time:</label>
+                      <p>{{timePart}}</p>
+                      <label>Change Time:</label>
+                      <input class="form-control" type="time" id="time" name="time" ng-model="newtimePart" ng-change="combineDateAndTime(newdatePart, newtimePart)" required="true" />
                     </div>
                     <div class="form-group col-md-2 text-right">
                       <div class="checkbox">

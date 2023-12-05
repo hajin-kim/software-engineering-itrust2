@@ -316,6 +316,8 @@
                     $scope.message = "";
                     $scope.visit.hcp = /*[[${#httpServletRequest.remoteUser}]]*/null; /* Ugly hack; use this to retrieve the name of the HCP who is currently logged in.  This grabs it from Thymeleaf */
                     $scope.visit.status = "PENDING";
+                    console.log($scope.visit.date);
+                    console.log($scope.visit.time);
 
                     // Error checking
                     if (!$scope.visit.type) {
@@ -328,7 +330,7 @@
 
                     // Validate date and time
                     const date = new Date($scope.visitInputDate);
-                    if (!dateTimeService.isValidDate($scope.visitInputDate)) {
+                    if (!dateTimeService.isValidDate(date)) {
                         $scope.errorMsg += "Please input a valid date\n";
                     }
 

@@ -66,9 +66,9 @@ public class OphthalmologySurgeryService {
         final OphthalmologySurgery ophthalmologySurgery = osOptional.get();
 
         if (ophthalmologySurgeryForm.getPatient() != null)
-            ophthalmologySurgery.setPatient(userService.findByName(ophthalmologySurgeryForm.getPatient()));
+            ophthalmologySurgery.setPatient(ophthalmologySurgeryForm.getPatient());
         if (ophthalmologySurgeryForm.getHcp() != null)
-            ophthalmologySurgery.setHcp(userService.findByName(ophthalmologySurgeryForm.getHcp()));
+            ophthalmologySurgery.setHcp(ophthalmologySurgeryForm.getHcp());
 
         if (ophthalmologySurgeryForm.getLeftVisualAcuityResult() != null)
             ophthalmologySurgery.setLeftVisualAcuityResult(ophthalmologySurgeryForm.getLeftVisualAcuityResult());

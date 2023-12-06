@@ -126,7 +126,7 @@ public class ApiPersonalRepresentationController {
         emailService.sendEmail(
                 "iTrust2 System",
                 personalRepresentativeUsername,
-                "Your personal representative has been removed",
+                "You have been un-declared as a personal representative",
                 "You have been un-declared as a personal representative for " + currentUsername + ".");
         loggerUtil.log(TransactionType.REMOVE_PR, currentUsername, personalRepresentativeUsername);
     }

@@ -144,7 +144,7 @@ public class ApiPersonalRepresentationController {
                 "iTrust2 System",
                 representingPatientUsername,
                 "Your personal representative has been removed",
-                "You have been un-declared as a representing of " + currentUsername + ".");
+                "Your personal representative " + currentUsername + " was unassigned.");
         loggerUtil.log(
                 TransactionType.REMOVE_SELF_AS_PR, currentUsername, representingPatientUsername);
     }

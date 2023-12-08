@@ -8,11 +8,13 @@ import edu.ncsu.csc.itrust2.models.AppointmentRequest;
 import edu.ncsu.csc.itrust2.models.BasicHealthMetrics;
 import edu.ncsu.csc.itrust2.models.Diagnosis;
 import edu.ncsu.csc.itrust2.models.Hospital;
+import edu.ncsu.csc.itrust2.models.ICDCode;
 import edu.ncsu.csc.itrust2.models.OfficeVisit;
 import edu.ncsu.csc.itrust2.models.OphthalmologySurgery;
 import edu.ncsu.csc.itrust2.models.Patient;
 import edu.ncsu.csc.itrust2.models.Personnel;
 import edu.ncsu.csc.itrust2.models.Prescription;
+import edu.ncsu.csc.itrust2.models.enums.AppointmentType;
 import edu.ncsu.csc.itrust2.repositories.OfficeVisitRepository;
 
 import java.time.ZoneId;
@@ -30,6 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static edu.ncsu.csc.itrust2.services.OphthalmologyAppointmentRequestServiceTest.assertAppointmentRequestEquals;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -85,27 +88,24 @@ public class OfficeVisitMutationServiceTest {
     }
 
     private void mockGetDiagnoses(
-            final List<DiagnosisForm> diagnosisForms, List<Diagnosis> diagnoses) { // 이건 또 어캐 짜냐
+            final List<DiagnosisForm> diagnosisForms, List<Diagnosis> diagnoses) {
         given(diagnosisService.build(eq(diagnosisForms.get(0)))).willReturn(diagnoses.get(0));
-        given(diagnosisService.build(eq(diagnosisForms.get(1)))).willReturn(diagnoses.get(1));
     }
 
     private void mockGetPrescriptions(
             final List<PrescriptionForm> prescriptionForms,
-            List<Prescription> prescriptions) { // 이건 또 어캐 짜냐
+            List<Prescription> prescriptions) {
         given(prescriptionService.build(eq(prescriptionForms.get(0))))
                 .willReturn(prescriptions.get(0));
-        given(prescriptionService.build(eq(prescriptionForms.get(1))))
-                .willReturn(prescriptions.get(1));
     }
 
     @Test
     public void testCreate() {
-        // Given
         String hospitalName = "TestHospital";
         String address = "TestAddress";
         String zip = "TestZip";
         String state = "TestState";
+        String testStr = "test";
         final Hospital hospital = new Hospital(hospitalName, address, zip, state);
 
         String patientName = "TestPatient";
@@ -120,30 +120,31 @@ public class OfficeVisitMutationServiceTest {
                 ZonedDateTime.of(
                         ZonedDateTime.now().getYear(), 11, 30, 11, 30, 0, 0, ZoneId.of("UTC"));
 
+        final ICDCode code = new ICDCode("T10", "Test 10");
         DiagnosisForm diagnosisForm1 = new DiagnosisForm();
-        DiagnosisForm diagnosisForm2 = new DiagnosisForm();
-        List<DiagnosisForm> diagnosisForms = Arrays.asList(diagnosisForm1, diagnosisForm2);
+        diagnosisForm1.setNote(testStr);
+        List<DiagnosisForm> diagnosisForms = Arrays.asList(diagnosisForm1);
         Diagnosis diagnosis1 = new Diagnosis();
-        Diagnosis diagnosis2 = new Diagnosis();
-        List<Diagnosis> diagnoses = Arrays.asList(diagnosis1, diagnosis2);
+        diagnosis1.setNote(testStr);
+        diagnosis1.setCode(code);
+        List<Diagnosis> diagnoses = Arrays.asList(diagnosis1);
 
         PrescriptionForm prescriptionForm1 = new PrescriptionForm();
-        PrescriptionForm prescriptionForm2 = new PrescriptionForm();
         List<PrescriptionForm> prescriptionForms =
-                Arrays.asList(prescriptionForm1, prescriptionForm2);
+                Arrays.asList(prescriptionForm1);
         Prescription prescription1 = new Prescription();
-        Prescription prescription2 = new Prescription();
-        List<Prescription> prescriptions = Arrays.asList(prescription1, prescription2);
+        List<Prescription> prescriptions = Arrays.asList(prescription1);
 
         OfficeVisitForm ovf = new OfficeVisitForm();
-//        ovf.setId("124516123");
         ovf.setPatient(patientName);
         ovf.setHcp(hcpName);
+        ovf.setNotes(testStr);
         ovf.setDate(String.valueOf(date));
         ovf.setPreScheduled("true");
         ovf.setHospital(hospitalName);
         ovf.setDiagnoses(diagnosisForms);
         ovf.setPrescriptions(prescriptionForms);
+        ovf.setType("GENERAL_CHECKUP");
 
         OfficeVisit ov = new OfficeVisit();
         ov.setPatient(patient);
@@ -173,7 +174,19 @@ public class OfficeVisitMutationServiceTest {
 
         assertNotNull(createdOfficeVisit);
         assertEquals(id, (long) createdOfficeVisit.getId());
+        assertEquals(patient,createdOfficeVisit.getPatient());
+        assertEquals(hcp,createdOfficeVisit.getHcp());
+        assertEquals(testStr,createdOfficeVisit.getNotes());
+        assertEquals(date,createdOfficeVisit.getDate());;
         assertAppointmentRequestEquals(appointmentRequest, createdOfficeVisit.getAppointment());
+        assertEquals(hospital,createdOfficeVisit.getHospital());
+        assertThat(basicHealthMetrics.equals(createdOfficeVisit.getBasicHealthMetrics())).isTrue();
+        assertEquals(diagnosis1,createdOfficeVisit.getDiagnoses().get(0));
+        assertEquals(prescription1,createdOfficeVisit.getPrescriptions().get(0));
+        assertEquals(AppointmentType.GENERAL_CHECKUP,createdOfficeVisit.getType());
+    }
+    public static void assertDiagnosisFormEqualsDiagnosis(DiagnosisForm diagnosisForm, Diagnosis diagnosis){
+
     }
 
     @Test

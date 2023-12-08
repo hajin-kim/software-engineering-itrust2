@@ -1,9 +1,6 @@
 package edu.ncsu.csc.itrust2.services;
 
-import edu.ncsu.csc.itrust2.forms.DiagnosisForm;
-import edu.ncsu.csc.itrust2.forms.OfficeVisitForm;
-import edu.ncsu.csc.itrust2.forms.OphthalmologySurgeryForm;
-import edu.ncsu.csc.itrust2.forms.PrescriptionForm;
+import edu.ncsu.csc.itrust2.forms.*;
 import edu.ncsu.csc.itrust2.models.AppointmentRequest;
 import edu.ncsu.csc.itrust2.models.BasicHealthMetrics;
 import edu.ncsu.csc.itrust2.models.Diagnosis;
@@ -15,6 +12,7 @@ import edu.ncsu.csc.itrust2.repositories.OfficeVisitRepository;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -101,6 +99,26 @@ public class OfficeVisitMutationService {
 
         ov.setType(AppointmentType.OPHTHALMOLOGY_SURGERY);
         ov.setOphthalmologySurgery(getOphthalmologySurgery(osf));
+
+        return officeVisitRepository.save(ov);
+    }
+
+    public OfficeVisit updateForOphthalmologySurgery(
+            Long id, UpdateOfficeVisitForm officeVisitForm) {
+
+        Optional<OfficeVisit> ovOptional = officeVisitRepository.findById(id);
+        if (ovOptional.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Office visit with the id " + id + " doesn't exist");
+        }
+
+        final OfficeVisit ov = ovOptional.get();
+        ov.setDate(ZonedDateTime.parse(officeVisitForm.getDate()));
+        ov.setOphthalmologySurgery(
+                ophthalmologySurgeryService.update(
+                        ov.getOphthalmologySurgery().getId(),
+                        officeVisitForm.getOphthalmologySurgery()));
+        ov.setNotes(officeVisitForm.getNotes());
 
         return officeVisitRepository.save(ov);
     }

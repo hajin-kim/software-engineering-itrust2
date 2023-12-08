@@ -2,6 +2,7 @@ package edu.ncsu.csc.itrust2.services;
 
 import edu.ncsu.csc.itrust2.models.Email;
 import edu.ncsu.csc.itrust2.models.User;
+import edu.ncsu.csc.itrust2.models.enums.TransactionType;
 import edu.ncsu.csc.itrust2.repositories.EmailRepository;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
@@ -59,13 +60,14 @@ public class EmailService extends Service {
     }
 
     public List<Email> findByReceiver(final User receiver) {
+        loggerUtil.log(TransactionType.PATIENT_VIEWS_EMAIL_ENTITY, receiver);
         return repository.findByReceiver(receiver);
     }
 
     public static boolean isEmail(String email) {
         boolean validation = false;
 
-        if (email.isEmpty()) {
+        if (email == null || email.isEmpty()) {
             return false;
         }
 
@@ -80,6 +82,7 @@ public class EmailService extends Service {
     }
 
     public List<Email> findBySender(final String sender) {
+        loggerUtil.log(TransactionType.PATIENT_VIEWS_EMAIL_ENTITY, sender);
         return repository.findBySender(sender);
     }
 }

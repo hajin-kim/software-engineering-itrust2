@@ -5,10 +5,11 @@ import edu.ncsu.csc.itrust2.models.enums.TransactionType;
 import edu.ncsu.csc.itrust2.models.security.LogEntry;
 import edu.ncsu.csc.itrust2.services.AppointmentRequestService;
 import edu.ncsu.csc.itrust2.services.BasicHealthMetricsService;
-import edu.ncsu.csc.itrust2.services.EmergencyPatientService;
+import edu.ncsu.csc.itrust2.services.DiagnosisService;
 import edu.ncsu.csc.itrust2.services.PatientService;
 import edu.ncsu.csc.itrust2.services.PersonalRepresentationService;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
+import edu.ncsu.csc.itrust2.services.EmailService;
 
 import java.util.List;
 
@@ -30,8 +31,9 @@ public class ApiPersonalRepresentationController {
     private final AppointmentRequestService appointmentRequestService;
     private final BasicHealthMetricsService basicHealthMetricsService;
     private final PatientService patientService;
-    private final EmergencyPatientService emergencyPatientService;
+    private final DiagnosisService diagnosisService;
     private final LoggerUtil loggerUtil;
+    private final EmailService emailService;
 
     @Operation(summary = "Patient: 자신의 대리인 목록 조회")
     @GetMapping("/personalRepresentatives")
@@ -77,6 +79,14 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.setPersonalRepresentation(
                 currentUsername, personalRepresentativeUsername);
 
+        loggerUtil.log(
+                TransactionType.PR_EMAIL_NOTICE,
+                loggerUtil.getCurrentUsername());
+        emailService.sendEmail(
+                "iTrust2 System",
+                personalRepresentativeUsername,
+                "You have been set as a personal representative",
+                "You have been set as a personal representative for " + currentUsername + ".");
         loggerUtil.log(TransactionType.DECLARE_PR, currentUsername, personalRepresentativeUsername);
     }
 
@@ -92,6 +102,19 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.setPersonalRepresentation(
                 patientUsername, personalRepresentativeUsername);
 
+        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        emailService.sendEmail(
+                "iTrust2 System",
+                personalRepresentativeUsername,
+                "HCP has set you as a personal representative",
+                "You have been set as a personal representative for " + patientUsername + " by HCP.");
+
+        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        emailService.sendEmail(
+                "iTrust2 System",
+                patientUsername,
+                "HCP has set your personal representative",
+                "You have been set as a representing of " + personalRepresentativeUsername + " by HCP.");
         String currentUsername = loggerUtil.getCurrentUsername();
         loggerUtil.log(
                 TransactionType.HCP_DECLARE_PR, currentUsername, personalRepresentativeUsername);
@@ -107,6 +130,12 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.cancelPersonalRepresentation(
                 currentUsername, personalRepresentativeUsername);
 
+        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        emailService.sendEmail(
+                "iTrust2 System",
+                personalRepresentativeUsername,
+                "You have been un-declared as a personal representative",
+                "You have been un-declared as a personal representative for " + currentUsername + ".");
         loggerUtil.log(TransactionType.REMOVE_PR, currentUsername, personalRepresentativeUsername);
     }
 
@@ -120,6 +149,12 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.cancelPersonalRepresentation(
                 representingPatientUsername, currentUsername);
 
+        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        emailService.sendEmail(
+                "iTrust2 System",
+                representingPatientUsername,
+                "Your personal representative has been removed",
+                "Your personal representative " + currentUsername + " was unassigned.");
         loggerUtil.log(
                 TransactionType.REMOVE_SELF_AS_PR, currentUsername, representingPatientUsername);
     }
@@ -163,18 +198,19 @@ public class ApiPersonalRepresentationController {
     @Operation(summary = "Patient: 특정 환자의 diagnoses 목록 조회")
     @GetMapping("/representingPatients/{representingPatientUsername}/diagnoses")
     @PreAuthorize("hasRole('ROLE_PATIENT')")
-    public List<Diagnosis> listPatientDiagnosesIn60Days(
+    public List<Diagnosis> listPatientDiagnoses(
             @Parameter(description = "조회할 환자의 username 입니다.") @PathVariable
                     String representingPatientUsername) {
 
         String currentUsername = loggerUtil.getCurrentUsername();
+        Patient patient = (Patient) patientService.findByName(representingPatientUsername);
 
         if (!personalRepresentationService.isRepresentative(
                 currentUsername, representingPatientUsername)) {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN, "Access denied. 대리인 관계의 환자가 아닙니다.");
         }
-        return emergencyPatientService.getRecentDiagnoses(representingPatientUsername);
+        return diagnosisService.findByPatient(patient);
     }
 
     @Operation(summary = "Patient: 특정 환자의 appointments 목록 조회")

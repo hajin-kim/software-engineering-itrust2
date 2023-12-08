@@ -29,10 +29,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import static edu.ncsu.csc.itrust2.services.OphthalmologyAppointmentRequestServiceTest.assertAppointmentRequestEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
@@ -56,12 +58,16 @@ public class OfficeVisitMutationServiceTest {
     @InjectMocks private OfficeVisitMutationService officeVisitMutationService;
 
     private void mockAssertNotExistsById(String idString) {
-        final var id = Long.parseLong(idString);
+        Long id = null;
+        if (idString != null)
+            id = Long.parseLong(idString);
         given(officeVisitRepository.existsById(eq(id))).willReturn(false);
     }
 
     private void mockAssertExistsById(String idString) {
-        final var id = Long.parseLong(idString);
+        Long id = null;
+        if (idString != null)
+            id = Long.parseLong(idString);
         given(officeVisitRepository.existsById(eq(id))).willReturn(true);
     }
 
@@ -130,7 +136,7 @@ public class OfficeVisitMutationServiceTest {
         List<Prescription> prescriptions = Arrays.asList(prescription1, prescription2);
 
         OfficeVisitForm ovf = new OfficeVisitForm();
-        ovf.setId("124516123");
+//        ovf.setId("124516123");
         ovf.setPatient(patientName);
         ovf.setHcp(hcpName);
         ovf.setDate(String.valueOf(date));
@@ -146,7 +152,7 @@ public class OfficeVisitMutationServiceTest {
         AppointmentRequest appointmentRequest = new AppointmentRequest();
         BasicHealthMetrics basicHealthMetrics = new BasicHealthMetrics();
 
-        mockAssertExistsById(ovf.getId());
+        mockAssertNotExistsById(ovf.getId());
         given(userService.findByName(eq(patientName))).willReturn(patient);
         given(userService.findByName(eq(hcpName))).willReturn(hcp);
         mockGetAppointmentRequest(ov, appointmentRequest);
@@ -155,11 +161,19 @@ public class OfficeVisitMutationServiceTest {
         mockGetDiagnoses(diagnosisForms, diagnoses);
         mockGetPrescriptions(prescriptionForms, prescriptions);
 
+        final var id = 124_516_123L;
+
+        given(officeVisitRepository.save(any())).will(invocation -> {
+            OfficeVisit officeVisit= invocation.getArgument(0);
+            officeVisit.setId(id);
+            return officeVisit;
+        });
+
         OfficeVisit createdOfficeVisit = officeVisitMutationService.create(ovf);
 
         assertNotNull(createdOfficeVisit);
-
-        // Add more assertions based on your data and logic
+        assertEquals(id, (long) createdOfficeVisit.getId());
+        assertAppointmentRequestEquals(appointmentRequest, createdOfficeVisit.getAppointment());
     }
 
     @Test

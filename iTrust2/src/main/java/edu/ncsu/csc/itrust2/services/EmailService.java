@@ -36,6 +36,9 @@ public class EmailService extends Service {
         User Sender = userService.findByName(senderName);
 
         User receiver = userService.findByName(receiverName);
+        if (receiver == null) {
+            throw new IllegalArgumentException("Receiver not found: " + receiverName);
+        }
         String receiverEmail = receiver.getEmail();
 
         if (isEmail(receiverEmail)) {
@@ -43,8 +46,8 @@ public class EmailService extends Service {
 
             message.setFrom(fixedSystemEmail);
             message.setTo(receiverEmail);
-            message.setSubject("[iTrust2]" + subject);
-            message.setText(senderName + "로부터 전송된 메세지입니다.\n" + messageBody);
+            message.setSubject("[iTrust2] " + subject);
+            message.setText(senderName + "(으)로부터 전송된 메세지입니다.\n" + messageBody);
 
             emailSender.send(message);
         }

@@ -27,7 +27,8 @@ public class EmailService extends Service {
     private final UserService userService;
     final LoggerUtil loggerUtil;
 
-    @Autowired private JavaMailSender emailSender;
+    @Autowired
+    private JavaMailSender emailSender;
 
     @Transactional
     public void sendEmail(
@@ -44,8 +45,8 @@ public class EmailService extends Service {
 
             message.setFrom(fixedSystemEmail);
             message.setTo(receiverEmail);
-            message.setSubject("[iTrust2]" + subject);
-            message.setText(senderName + "로부터 전송된 메세지입니다.\n" + messageBody);
+            message.setSubject("[iTrust2] " + subject);
+            message.setText(senderName + "(으)로부터 전송된 메세지입니다.\n" + messageBody);
 
             emailSender.send(message);
         }

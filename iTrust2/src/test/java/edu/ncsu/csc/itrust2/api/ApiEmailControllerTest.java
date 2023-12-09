@@ -1,14 +1,13 @@
-package edu.ncsu.csc.itrust2.services;
+package edu.ncsu.csc.itrust2.api;
 
 import edu.ncsu.csc.itrust2.controllers.api.APIEmailController;
 import edu.ncsu.csc.itrust2.forms.UserForm;
 import edu.ncsu.csc.itrust2.models.*;
 import edu.ncsu.csc.itrust2.models.enums.Role;
-import edu.ncsu.csc.itrust2.repositories.EmailRepository;
-import edu.ncsu.csc.itrust2.repositories.UserRepository;
+import edu.ncsu.csc.itrust2.services.EmailService;
+import edu.ncsu.csc.itrust2.services.UserService;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,9 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -41,67 +37,68 @@ public class ApiEmailControllerTest {
         final User sender1 = new Patient(currentUserForm);
         sender1.setEmail("hajinkids3106@gmail.com");
         given(loggerUtil.getCurrentUsername()).willReturn(currentUsername);
-        given(userService.findByName(currentUsername)).willReturn(sender1);
 
-        final String receiverUsername = "receiverUsername";
+        final String receiver1Username = "receiver1Username";
         final UserForm receiverUserForm =
-                new UserForm(receiverUsername, "123456", Role.ROLE_PATIENT, 1);
+                new UserForm(receiver1Username, "123456", Role.ROLE_PATIENT, 1);
         final User receiver1 = new Patient(receiverUserForm);
         receiver1.setEmail("12345@itrust.com");
-        given(userService.findByName(receiverUsername)).willReturn(receiver1);
+        given(userService.findByName(receiver1Username)).willReturn(receiver1);
 
         final String receiver2Username = "receiver2Username";
         final UserForm receiver2UserForm =
                 new UserForm(receiver2Username, "123456", Role.ROLE_HCP, 1);
         final User receiver2 = new Personnel(receiver2UserForm);
         receiver1.setEmail("abcde@itrust.com");
-        given(userService.findByName(receiver2Username)).willReturn(receiver2);
 
-        Email fakeEmail1 = new Email("currentUsername", receiver1, "Subject1", "Body1");
-        Email fakeEmail2 = new Email("currentUsername", receiver2, "Subject2", "Body2");
-        List<Email> expectedEmails = Arrays.asList(fakeEmail1, fakeEmail2);
-        //emailService.save(fakeEmail1);
-        //emailService.save(fakeEmail2);
+        Email testEmail1 = new Email("currentUsername", receiver1, "Subject1", "Body1");
+        Email testEmail2 = new Email("currentUsername", receiver2, "Subject2", "Body2");
+        List<Email> expectedEmail1 = List.of(testEmail1);
+        List<Email> expectedEmail2 = List.of(testEmail2);
 
-        given(loggerUtil.getCurrentUsername()).willReturn(currentUsername);
+        emailService.sendEmail("currentUsername", receiver1Username, "Subject1", "Body1");
+        emailService.sendEmail("currentUsername", receiver2Username, "Subject1", "Body1");
+        given(emailService.findByReceiver(receiver1)).willReturn(expectedEmail1);
 
-        List<Email> result = apiEmailController.viewInbox();
-        assertNotNull(result);
-        assertEquals(expectedEmails, result);
+        given(loggerUtil.getCurrentUsername()).willReturn(receiver1Username);
+        List<Email> actualEmail1 = apiEmailController.viewInbox();
+        assertNotNull(actualEmail1);
+        assertEquals(expectedEmail1, actualEmail1);
     }
 
     @Test
     public void testViewOutbox() {
-        final String currentUsername = "currentUsername";
+        final String sender1Username = "sender1Username";
         final UserForm currentUserForm =
-                new UserForm(currentUsername, "123456", Role.ROLE_PATIENT, 1);
+                new UserForm(sender1Username, "123456", Role.ROLE_PATIENT, 1);
         final User sender1 = new Patient(currentUserForm);
         sender1.setEmail("hajinkids3106@gmail.com");
-        given(loggerUtil.getCurrentUsername()).willReturn(currentUsername);
-        given(userService.findByName(currentUsername)).willReturn(sender1);
+        given(loggerUtil.getCurrentUsername()).willReturn(sender1Username);
 
-        final String receiverUsername = "receiverUsername";
+        final String receiver1Username = "receiver1Username";
         final UserForm receiverUserForm =
-                new UserForm(receiverUsername, "123456", Role.ROLE_PATIENT, 1);
+                new UserForm(receiver1Username, "123456", Role.ROLE_PATIENT, 1);
         final User receiver1 = new Patient(receiverUserForm);
-        receiver1.setEmail("12345@itrust.com");
-        given(userService.findByName(receiverUsername)).willReturn(receiver1);
+        receiver1.setEmail("12345@itrust2.com");
 
         final String receiver2Username = "receiver2Username";
         final UserForm receiver2UserForm =
                 new UserForm(receiver2Username, "123456", Role.ROLE_HCP, 1);
         final User receiver2 = new Personnel(receiver2UserForm);
-        receiver1.setEmail("abcde@itrust.com");
-        given(userService.findByName(receiver2Username)).willReturn(receiver2);
+        receiver1.setEmail("abcde@itrust2.com");
 
-        Email fakeEmail1 = new Email("currentUsername", receiver1, "Subject1", "Body1");
-        Email fakeEmail2 = new Email("currentUsername", receiver2, "Subject2", "Body2");
-        emailService.save(fakeEmail1);
-        emailService.save(fakeEmail2);
+        Email testEmail1 = new Email("sender1Username", receiver1, "Subject1", "Body1");
+        Email testEmail2 = new Email("sender1Username", receiver2, "Subject2", "Body2");
+        List<Email> expectedEmails = Arrays.asList(testEmail1,testEmail2);
 
-        given(loggerUtil.getCurrentUsername()).willReturn(receiverUsername);
+        emailService.sendEmail("sender1Username", receiver1Username, "Subject1", "Body1");
+        emailService.sendEmail("sender1Username", receiver2Username, "Subject2", "Body2");
+        given(emailService.findBySender(sender1Username)).willReturn(expectedEmails);
 
-        List<Email> result = apiEmailController.viewOutbox();
-        assertNotNull(result);
+        given(loggerUtil.getCurrentUsername()).willReturn(sender1Username);
+        List<Email> actualEmails = apiEmailController.viewOutbox();
+
+        assertNotNull(actualEmails);
+        assertEquals(expectedEmails, actualEmails);
     }
 }

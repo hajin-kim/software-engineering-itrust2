@@ -5,8 +5,6 @@ import edu.ncsu.csc.itrust2.forms.UpdateOphthalmologySurgeryForm;
 import edu.ncsu.csc.itrust2.models.OphthalmologySurgery;
 import edu.ncsu.csc.itrust2.repositories.OphthalmologySurgeryRepository;
 
-
-import java.util.List;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;

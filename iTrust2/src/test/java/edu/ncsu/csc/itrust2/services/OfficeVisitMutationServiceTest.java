@@ -336,7 +336,7 @@ public class OfficeVisitMutationServiceTest {
         os.setRightVisualAcuityResult(123);
         os.setLeftSphere(23f);
         os.setRightSphere(23f);
-        os.setId(2L);
+        os.setId(124_516_123L);
         os.setSurgeryType(OphthalmologySurgeryType.CATARACT_SURGERY);
 
         OfficeVisit ov = new OfficeVisit();
@@ -375,7 +375,6 @@ public class OfficeVisitMutationServiceTest {
         assertEquals(hcp, createdOfficeVisit.getHcp());
         assertEquals(testStr, createdOfficeVisit.getNotes());
         assertEquals(date, createdOfficeVisit.getDate());
-        ;
         assertAppointmentRequestEquals(appointmentRequest, createdOfficeVisit.getAppointment());
         assertEquals(hospital, createdOfficeVisit.getHospital());
         assertThat(basicHealthMetrics.equals(createdOfficeVisit.getBasicHealthMetrics())).isTrue();
@@ -401,7 +400,7 @@ public class OfficeVisitMutationServiceTest {
         existingOs.setRightVisualAcuityResult(123);
         existingOs.setLeftSphere(23f);
         existingOs.setRightSphere(23f);
-        existingOs.setId(2L);
+        existingOs.setId(124_516_123L);
         existingOs.setSurgeryType(OphthalmologySurgeryType.CATARACT_SURGERY);
 
         existingOfficeVisit.setId(1L);

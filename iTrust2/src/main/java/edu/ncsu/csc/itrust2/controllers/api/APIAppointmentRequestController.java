@@ -345,7 +345,7 @@ public class APIAppointmentRequestController extends APIController {
                                 request.getHcp());
                         loggerUtil.log(
                                 TransactionType.APPOINTMENT_AND_SURGERY_REQUEST_EMAIL_NOTICE,
-                                loggerUtil.getCurrentUsername());
+                                request.getPatient());
                         emailService.sendEmail(
                                 "iTrust2 System",
                                 request.getPatient().getUsername(),
@@ -361,7 +361,7 @@ public class APIAppointmentRequestController extends APIController {
                                 request.getHcp());
                         loggerUtil.log(
                                 TransactionType.APPOINTMENT_AND_SURGERY_REQUEST_EMAIL_NOTICE,
-                                loggerUtil.getCurrentUsername());
+                                request.getPatient());
                         emailService.sendEmail(
                                 "iTrust2 System",
                                 request.getPatient().getUsername(),
@@ -377,7 +377,7 @@ public class APIAppointmentRequestController extends APIController {
                                 request.getHcp());
                         loggerUtil.log(
                                 TransactionType.APPOINTMENT_AND_SURGERY_REQUEST_EMAIL_NOTICE,
-                                loggerUtil.getCurrentUsername());
+                                request.getPatient());
                         emailService.sendEmail(
                                 "iTrust2 System",
                                 request.getPatient().getUsername(),
@@ -395,7 +395,7 @@ public class APIAppointmentRequestController extends APIController {
                                 request.getHcp());
                         loggerUtil.log(
                                 TransactionType.APPOINTMENT_AND_SURGERY_REQUEST_EMAIL_NOTICE,
-                                loggerUtil.getCurrentUsername());
+                                request.getPatient());
                         emailService.sendEmail(
                                 "iTrust2 System",
                                 request.getPatient().getUsername(),
@@ -410,7 +410,7 @@ public class APIAppointmentRequestController extends APIController {
                                 request.getHcp());
                         loggerUtil.log(
                                 TransactionType.APPOINTMENT_AND_SURGERY_REQUEST_EMAIL_NOTICE,
-                                loggerUtil.getCurrentUsername());
+                                request.getPatient());
                         emailService.sendEmail(
                                 "iTrust2 System",
                                 request.getPatient().getUsername(),
@@ -425,7 +425,7 @@ public class APIAppointmentRequestController extends APIController {
                                 request.getHcp());
                         loggerUtil.log(
                                 TransactionType.APPOINTMENT_AND_SURGERY_REQUEST_EMAIL_NOTICE,
-                                loggerUtil.getCurrentUsername());
+                                request.getPatient());
                         emailService.sendEmail(
                                 "iTrust2 System",
                                 request.getPatient().getUsername(),

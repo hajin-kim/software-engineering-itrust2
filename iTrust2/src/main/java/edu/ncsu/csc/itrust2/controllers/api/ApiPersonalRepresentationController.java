@@ -6,10 +6,10 @@ import edu.ncsu.csc.itrust2.models.security.LogEntry;
 import edu.ncsu.csc.itrust2.services.AppointmentRequestService;
 import edu.ncsu.csc.itrust2.services.BasicHealthMetricsService;
 import edu.ncsu.csc.itrust2.services.DiagnosisService;
+import edu.ncsu.csc.itrust2.services.EmailService;
 import edu.ncsu.csc.itrust2.services.PatientService;
 import edu.ncsu.csc.itrust2.services.PersonalRepresentationService;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
-import edu.ncsu.csc.itrust2.services.EmailService;
 
 import java.util.List;
 
@@ -79,9 +79,7 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.setPersonalRepresentation(
                 currentUsername, personalRepresentativeUsername);
 
-        loggerUtil.log(
-                TransactionType.PR_EMAIL_NOTICE,
-                loggerUtil.getCurrentUsername());
+        loggerUtil.log(TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
         emailService.sendEmail(
                 "iTrust2 System",
                 personalRepresentativeUsername,
@@ -102,19 +100,23 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.setPersonalRepresentation(
                 patientUsername, personalRepresentativeUsername);
 
-        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        loggerUtil.log(TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
         emailService.sendEmail(
                 "iTrust2 System",
                 personalRepresentativeUsername,
                 "HCP has set you as a personal representative",
-                "You have been set as a personal representative for " + patientUsername + " by HCP.");
+                "You have been set as a personal representative for "
+                        + patientUsername
+                        + " by HCP.");
 
-        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        loggerUtil.log(TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
         emailService.sendEmail(
                 "iTrust2 System",
                 patientUsername,
                 "HCP has set your personal representative",
-                "You have been set as a representing of " + personalRepresentativeUsername + " by HCP.");
+                "You have been set as a representing of "
+                        + personalRepresentativeUsername
+                        + " by HCP.");
         String currentUsername = loggerUtil.getCurrentUsername();
         loggerUtil.log(
                 TransactionType.HCP_DECLARE_PR, currentUsername, personalRepresentativeUsername);
@@ -130,12 +132,14 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.cancelPersonalRepresentation(
                 currentUsername, personalRepresentativeUsername);
 
-        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        loggerUtil.log(TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
         emailService.sendEmail(
                 "iTrust2 System",
                 personalRepresentativeUsername,
                 "You have been un-declared as a personal representative",
-                "You have been un-declared as a personal representative for " + currentUsername + ".");
+                "You have been un-declared as a personal representative for "
+                        + currentUsername
+                        + ".");
         loggerUtil.log(TransactionType.REMOVE_PR, currentUsername, personalRepresentativeUsername);
     }
 
@@ -149,7 +153,7 @@ public class ApiPersonalRepresentationController {
         personalRepresentationService.cancelPersonalRepresentation(
                 representingPatientUsername, currentUsername);
 
-        loggerUtil.log( TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
+        loggerUtil.log(TransactionType.PR_EMAIL_NOTICE, loggerUtil.getCurrentUsername());
         emailService.sendEmail(
                 "iTrust2 System",
                 representingPatientUsername,
